@@ -27,15 +27,15 @@
 
 package com.questhelper.helpers.quests.templeoftheeye;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -247,6 +247,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 		inWizardFloorOne = new ZoneRequirement(wizardFloorOne);
 		inTempleOfTheEye = new ZoneRequirement(templeOfTheEye);
+		// TODO: this should also consider the mind altar as part of the area
 		inTempleOfTheEyeTutorial = new ZoneRequirement(templeOfTheEye2);
 
 		canTeleportFromHerbert = new VarbitRequirement(13740, 0);
@@ -262,6 +263,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 		tamaraRiftTalk = new VarbitRequirement(13754, 0);
 		cordeliaRiftTalk = new VarbitRequirement(13756, 0);
 
+		// TODO: Seems to be generally done for cutscenes? Happens in Enahkra's Lament
 		mysteriousVisionSeen = new VarbitRequirement(12139, 1);
 	}
 
@@ -387,7 +389,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Get puzzle from Apprentice Felix.");
 		talkToTamara = new NpcStep(this, NpcID.APPRENTICE_TAMARA, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Tamara.");
-		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA_11443, new WorldPoint(3112, 3162, 1),
+		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Cordelia.");
 
 		talktoTrailborn2 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),

@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.achievementdiaries.desert;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -54,7 +54,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
@@ -219,7 +219,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		pollRooftop = new ObjectStep(this, ObjectID.BASKET_14935, new WorldPoint(3351, 2962, 0),
 			"Climb on the basket and complete a lap of the Pollnivneach Rooftop course.");
 
-		menaThug = new NpcStep(this, NpcID.MENAPHITE_THUG, new WorldPoint(3347, 2959, 0),
+		menaThug = new NpcStep(this, new int[]{NpcID.MENAPHITE_THUG, NpcID.MENAPHITE_THUG_3550}, new WorldPoint(3347, 2959, 0),
 			"Knockout and pickpocket a Menaphite thug.", blackjack);
 
 		refillWaterskin = new ItemStep(this, "Refill an empty waterskin using the Lunar spell Humidify in the Desert " +
@@ -252,9 +252,8 @@ public class DesertHard extends ComplexStateQuestHelper
 		moveToSoph2 = new ObjectStep(this, ObjectID.LADDER_20278, new WorldPoint(2800, 5159, 0),
 			"Climb down the ladder again.", combatGear, lightsource);
 		killLocustRider = new NpcStep(this, NpcID.LOCUST_RIDER_796, new WorldPoint(3296, 9267, 2),
-			"Kill a Scarab mage or Locust rider with keris.", true, combatGear, keris.equipped());
-		killLocustRider.addAlternateNpcs(NpcID.SCARAB_MAGE, NpcID.SCARAB_MAGE_799, NpcID.LOCUST_RIDER,
-			NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
+			"Kill a Locust rider with keris.", true, combatGear, keris.equipped());
+		killLocustRider.addAlternateNpcs(NpcID.LOCUST_RIDER, NpcID.LOCUST_RIDER_800, NpcID.LOCUST_RIDER_801);
 
 		claimReward = new NpcStep(this, NpcID.JARR, new WorldPoint(3303, 3124, 0),
 			"Talk to Jarr at the Shantay pass to claim your reward!");

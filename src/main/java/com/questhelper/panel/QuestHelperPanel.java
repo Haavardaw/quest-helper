@@ -24,10 +24,11 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.Icon;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -59,7 +60,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.QuestState;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
@@ -91,6 +91,8 @@ public class QuestHelperPanel extends PluginPanel
 
 	QuestHelperPlugin questHelperPlugin;
 
+	QuestManager questManager;
+
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon PATREON_ICON;
@@ -104,11 +106,12 @@ public class QuestHelperPanel extends PluginPanel
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
-	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
 		super(false);
 
 		this.questHelperPlugin = questHelperPlugin;
+		this.questManager = questManager;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -280,7 +283,7 @@ public class QuestHelperPanel extends PluginPanel
 		searchQuestsPanel.add(allQuestsCompletedPanel, BorderLayout.SOUTH);
 
 		questListPanel.setBorder(new EmptyBorder(8, 10, 0, 10));
-		questListPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		questListPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 5));
 		questListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		showMatchingQuests("");
 
@@ -321,7 +324,7 @@ public class QuestHelperPanel extends PluginPanel
 		add(scrollableContainer, BorderLayout.CENTER);
 
 		/* Layout */
-		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin);
+		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin, questManager);
 
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
@@ -415,14 +418,14 @@ public class QuestHelperPanel extends PluginPanel
 					.filter(questFilter)
 					.collect(Collectors.toList());
 
-				if (filterList.size() != 0)
+				if (!filterList.isEmpty())
 				{
 					questSelectPanels.add(new QuestSelectPanel(questFilter.getDisplayName()));
 				}
 				for (QuestHelper questHelper : filterList)
 				{
 					QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+					questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
 				}
 			}
 		}
@@ -431,7 +434,7 @@ public class QuestHelperPanel extends PluginPanel
 			for (QuestHelper questHelper : questHelpers)
 			{
 				QuestState questState = completedQuests.getOrDefault(questHelper.getQuest(), QuestState.NOT_STARTED);
-				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, this, questHelper, questState));
+				questSelectPanels.add(new QuestSelectPanel(questHelperPlugin, questManager, this, questHelper, questState));
 			}
 		}
 

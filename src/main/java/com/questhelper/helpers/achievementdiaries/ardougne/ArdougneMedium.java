@@ -24,15 +24,16 @@
  */
 package com.questhelper.helpers.achievementdiaries.ardougne;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.domain.AccountType;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.questhelper.util.Utils;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -62,10 +64,9 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.FishingSpot;
 
 @QuestDescriptor(
@@ -258,7 +259,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		grapYan2 = new ObjectStep(this, ObjectID.WALL_17048, new WorldPoint(2556, 3075, 1),
 			"Jump off the opposite side!");
 
-		if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)// will need testing to confirm this works
+		if (Utils.getAccountType(client) == AccountType.ULTIMATE_IRONMAN)
 		{
 			claimSand = new ObjectStep(this, ObjectID.SANDPIT, new WorldPoint(2543, 3104, 0),
 				"Fill a bucket with sand using Bert's sand pit.", bucket);
@@ -288,8 +289,10 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		moveToSkavid = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2806, new WorldPoint(2524, 3069, 0),
 			"Enter the Cave.", lightSource, skavMap);
 		caveNightshade = new ItemStep(this, "Pickup the Cave nightshade.", nightshade);
-
-		moveToPlatform = new NpcStep(this, NpcID.JEB, new WorldPoint(2719, 3305, 0),
+		// Need step at top of wall for grapple
+		// Need to highlight chicksword to kill
+		// Need to point to Jeb if Jeb is deliverer, otherwise Holgart
+		moveToPlatform = new NpcStep(this, NpcID.JEB_4803, new WorldPoint(2719, 3305, 0),
 			"Talk to Jeb or Holgart to travel to the Fishing Platform.", smallFishingNet);
 		((NpcStep) (moveToPlatform)).addAlternateNpcs(NpcID.HOLGART_7789);
 		fishOnPlatform = new NpcStep(this, FishingSpot.SHRIMP.getIds(), new WorldPoint(2790, 3276, 0),

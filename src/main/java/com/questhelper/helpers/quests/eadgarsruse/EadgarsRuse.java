@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.eadgarsruse;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -38,10 +38,9 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -62,7 +61,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.EADGARS_RUSE
@@ -75,7 +73,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		fakeMan, storeroomKey, goutweed, climbingBootsEquipped;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleport;
+	ItemRequirement ardougneTeleport, burthorpeTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
@@ -266,6 +264,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and Mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		ranarrPotionUnf = new ItemRequirement("Ranarr potion (unf)", ItemID.RANARR_POTION_UNF);
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
+		burthorpeTeleport = new ItemRequirement("Burthorpe teleport", ItemCollections.GAMES_NECKLACES);
 		coins12 = new ItemRequirement("Coins", ItemCollections.COINS, 12);
 		cellKey2 = new ItemRequirement("Cell key 2", ItemID.CELL_KEY_2);
 		vodkaHighlight = new ItemRequirement("Vodka", ItemID.VODKA);
@@ -548,7 +547,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		searchDrawers = new ObjectStep(this, ObjectID.KITCHEN_DRAWERS, new WorldPoint(2853, 10050, 1), "Search the kitchen drawers south east of Burntmeat.");
 		searchDrawers.addAlternateObjects(ObjectID.KITCHEN_DRAWERS_3817);
 
-		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2853, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
+		goDownToStoreroom = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2852, 10061, 1), "Go down to the storeroom from the Troll Stronghold kitchen.");
 
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.STOREROOM_DOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
@@ -581,6 +580,7 @@ public class EadgarsRuse extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(ardougneTeleport);
+		reqs.add(burthorpeTeleport);
 		return reqs;
 	}
 

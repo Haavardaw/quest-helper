@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.quests.piratestreasure;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -165,7 +165,7 @@ public class PiratesTreasure extends BasicQuestHelper
 		return Arrays.asList(
 				new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
 				new ItemReward("An Emerald", ItemID.EMERALD, 1),
-				new ItemReward("450 Coins", ItemID.COINS_995, 450));
+				new ItemReward("Coins", ItemID.COINS_995, 450));
 	}
 
 	@Override

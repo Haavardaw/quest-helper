@@ -24,18 +24,19 @@
  */
 package com.questhelper.helpers.quests.merlinscrystal;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ItemReward;
@@ -200,7 +201,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE_305);
 		hasAnyBlackCandle = new Conditions(LogicType.OR, blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.BEGGAR);
-		talkedToLady = new WidgetTextRequirement(217, 5, "Ok. That seems easy enough.");
+		talkedToLady = new Conditions(true, new DialogRequirement(client.getLocalPlayer().getName(), "Ok. That seems easy enough."));
 		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
 		inStar = new ZoneRequirement(star);
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX_THE_MIGHTY);
@@ -211,7 +212,8 @@ public class MerlinsCrystal extends BasicQuestHelper
 	public void setupSteps()
 	{
 		startQuest = new NpcStep(this, NpcID.KING_ARTHUR, new WorldPoint(2763, 3513, 0), "Talk to King Arthur in Camelot Castle to start.");
-		startQuest.addDialogStep("I want to become a knight of the round table!");
+		startQuest.addDialogStep("Yes.");
+		startQuest.addDialogStep("I want to become a Knight of the Round Table!");
 		talkToGawain = new NpcStep(this, NpcID.SIR_GAWAIN, new WorldPoint(2758, 3504, 0), "Talk to Sir Gawain about how Merlin got trapped.");
 		talkToGawain.addDialogStep("Do you know how Merlin got trapped?");
 

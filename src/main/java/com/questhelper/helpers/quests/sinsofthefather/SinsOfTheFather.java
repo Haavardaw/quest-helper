@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.sinsofthefather;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -38,7 +38,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -498,22 +498,22 @@ public class SinsOfTheFather extends BasicQuestHelper
 		((NpcStep) (followCarl)).setLinePoints(Arrays.asList(
 			new WorldPoint(3750, 3308, 0),
 			new WorldPoint(3751, 3315, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3747, 3316, 0),
 			new WorldPoint(3740, 3324, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3740, 3328, 0),
 			new WorldPoint(3718, 3325, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3718, 3328, 0),
 			new WorldPoint(3700, 3323, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3703, 3320, 0),
 			new WorldPoint(3705, 3305, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3707, 3310, 0),
 			new WorldPoint(3719, 3312, 0),
-			new WorldPoint(0, 0, 2),
+			new WorldPoint(0, 0, 0),
 			new WorldPoint(3718, 3316, 0),
 			new WorldPoint(3731, 3318, 0),
 			new WorldPoint(3731, 3307, 0)
@@ -860,7 +860,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("6 x 15,000 Experience Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 6), //4447 is placeholder for filter
+				new ItemReward("15,000 Experience Tomes (Any skill above 60)", ItemID.ANTIQUE_LAMP, 6), //4447 is placeholder for filter
 				new ItemReward("A Blisterwood Flail", ItemID.BLISTERWOOD_FLAIL, 1));
 	}
 

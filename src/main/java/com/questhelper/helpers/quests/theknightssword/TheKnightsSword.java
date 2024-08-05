@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.theknightssword;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
@@ -35,7 +35,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -152,6 +152,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		talkToSquire.addDialogStep("I can make a new sword if you like...");
 		talkToSquire.addDialogStep("So would these dwarves make another one?");
 		talkToSquire.addDialogStep("Ok, I'll give it a go.");
+		talkToSquire.addDialogStep("Yes.");
 		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");
 		talkToReldo.addDialogStep("What do you know about the Imcando dwarves?");
 		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo south of Port Sarim and give him a redberry pie.", redberryPie);

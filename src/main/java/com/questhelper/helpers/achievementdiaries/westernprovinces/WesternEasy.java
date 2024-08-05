@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.achievementdiaries.westernprovinces;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -53,7 +53,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
@@ -195,8 +195,8 @@ public class WesternEasy extends ComplexStateQuestHelper
 
 		moveToBrim = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_17209, new WorldPoint(2403, 3419, 0),
 			"Enter Brimstail's cave.");
-		brimstailEssence = new NpcStep(this, NpcID.BRIMSTAIL, new WorldPoint(2409, 9817, 0),
-			"Have Brimstail teleport you to the Essence mine");
+		brimstailEssence = new NpcStep(this, new int[]{NpcID.BRIMSTAIL, NpcID.BRIMSTAIL_11431},
+			new WorldPoint(2409, 9817, 0), "Have Brimstail teleport you to the Essence mine");
 		brimstailEssence.addDialogStep("I need to mine some rune essence.");
 
 		terrorbird = new NpcStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3432, 0),

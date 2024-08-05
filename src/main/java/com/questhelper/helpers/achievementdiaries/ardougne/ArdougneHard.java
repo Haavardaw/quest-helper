@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.achievementdiaries.ardougne;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.KeyringCollection;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.KeyringCollection;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.KeyringRequirement;
@@ -58,7 +58,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
@@ -343,7 +343,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.HUNTER, 59));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 65, true));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 68));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 68, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 72));
 
 		reqs.add(monkeyMadness);
@@ -416,7 +416,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(mgSteps);
 
 		PanelDetails plateSteps = new PanelDetails("Mithril Platebody", Collections.singletonList(mithPlate),
-			new SkillRequirement(Skill.SMITHING, 68), mithBar.quantity(5), hammer);
+			new SkillRequirement(Skill.SMITHING, 68, true), mithBar.quantity(5), hammer);
 		plateSteps.setDisplayCondition(notMithPlate);
 		plateSteps.setLockingStep(mithPlateTask);
 		allSteps.add(plateSteps);

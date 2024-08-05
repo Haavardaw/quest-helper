@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ComplexRequirement;
@@ -38,7 +38,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.player.WeightRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -54,6 +54,7 @@ import com.questhelper.steps.QuestStep;
 
 import java.util.*;
 
+import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -226,7 +227,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		generalReqs = new ArrayList<>();
 		generalReqs.add(new SkillRequirement(Skill.COOKING, 31));
-		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
+		if (Utils.getAccountType(client).isAnyIronman())
 		{
 			generalReqs.add(new ComplexRequirement(LogicType.OR, "42 Crafting or started Rum Deal for a fishbowl",
 				new SkillRequirement(Skill.CRAFTING, 42, true),

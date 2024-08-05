@@ -24,18 +24,18 @@
  */
 package com.questhelper.helpers.quests.asoulsbane;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -72,7 +72,7 @@ public class ASoulsBane extends BasicQuestHelper
 		inHole2, inHole3, inHole4, inHole5, inFearRoom, reaperNearby, inConfusionRoom, inHopelessRoom, inHopeRoom, inTolnaRoom;
 
 	DetailedQuestStep talkToLauna, useRopeOnRift, enterRift, takeWeapon, killAnimals, killBears, killRats, killUnicorn, killGoblins, leaveAngerRoom,
-		lookInsideHole0, lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, lookInsideHoles, killReaper, leaveFearRoom, killRealConfusionBeast,
+		lookInsideHoles, killReaper, leaveFearRoom, killRealConfusionBeast,
 		leaveConfusionRoom, leaveHopelessRoom, talkToTolna, talkToTolnaAgain;
 
 	NpcStep killHopelessCreatures, killHeads;
@@ -197,6 +197,7 @@ public class ASoulsBane extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToLauna = new NpcStep(this, NpcID.LAUNA, new WorldPoint(3307, 3454, 0), "Talk to Launa east of Varrock.");
+		talkToLauna.addDialogStep("Yes.");
 		talkToLauna.addDialogStep("Would you like me to go down to look for your husband and son?");
 
 		useRopeOnRift = new ObjectStep(this, NullObjectID.NULL_13968, new WorldPoint(3310, 3452, 0), "Use a rope on the rift.", rope);
@@ -237,22 +238,13 @@ public class ASoulsBane extends BasicQuestHelper
 
 		leaveAngerRoom = new ObjectStep(this, ObjectID.EXIT_13882, new WorldPoint(3038, 5229, 0), "Go to the next room.");
 
-		// Not used now
-		lookInsideHole0 = new ObjectStep(this, ObjectID.DARK_HOLE_13891, new WorldPoint(3066, 5245, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-		lookInsideHole1 = new ObjectStep(this, ObjectID.DARK_HOLE_13892, new WorldPoint(3069, 5227, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-		lookInsideHole2 = new ObjectStep(this, ObjectID.DARK_HOLE_13893, new WorldPoint(3064, 5219, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-		lookInsideHole3 = new ObjectStep(this, ObjectID.DARK_HOLE_13894, new WorldPoint(3053, 5219, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-		lookInsideHole4 = new ObjectStep(this, ObjectID.DARK_HOLE_13895, new WorldPoint(3046, 5230, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-		lookInsideHole5 = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.");
-
-		lookInsideHoles = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0), "Look inside " +
-			"the Dark Holes to cause fear reapers to appear. Kill 5-6 of them.", true);
+		lookInsideHoles = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0),
+			"Look inside the Dark Holes to cause fear reapers to appear. Kill 5 of them. You cannot search the same hole over and over again.", true);
 		((ObjectStep) lookInsideHoles).addAlternateObjects(ObjectID.DARK_HOLE_13891, ObjectID.DARK_HOLE_13892,
 			ObjectID.DARK_HOLE_13893, ObjectID.DARK_HOLE_13894, ObjectID.DARK_HOLE_13895);
 
 		killReaper = new NpcStep(this, NpcID.FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
 		lookInsideHoles.addSubSteps(killReaper);
-		lookInsideHole0.addSubSteps(lookInsideHole1, lookInsideHole2, lookInsideHole3, lookInsideHole4, lookInsideHole5, killReaper);
 
 		leaveFearRoom = new ObjectStep(this, NullObjectID.NULL_13898, new WorldPoint(3046, 5236, 0), "Continue to the next room.");
 
@@ -312,7 +304,7 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("500 Coins", ItemID.COINS_995, 500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 500));
 	}
 
 	@Override

@@ -24,9 +24,9 @@
  */
 package com.questhelper.helpers.quests.thefremennikisles;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
@@ -35,7 +35,7 @@ import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -51,11 +51,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.Utils;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -337,7 +338,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
+			if (Utils.getAccountType(client).isAnyIronman())
 			{
 				splitLogs8.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
 				splitLogs4.setTooltip("Cut down the arctic pines nearby, and split them on the woodcutting stump in central Neitiznot");
@@ -556,7 +557,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 
 	public void setupPanels()
 	{
-		if (client.getAccountType().isIronman() || client.getAccountType().isGroupIronman())
+		if (Utils.getAccountType(client).isAnyIronman())
 		{
 			prepareForRepairPanel = new PanelDetails("Helping Mawnis", Arrays.asList(talkToMawnis, talkToMawnisWithLogs, repairBridge1, talkToMawnisAfterRepair), rope8, axe, knife);
 			prepareForCombatPanel = new PanelDetails("Preparing to fight", Arrays.asList(getYakArmour, makeShield), needle, thread, coins15, bronzeNail, hammer, rope);

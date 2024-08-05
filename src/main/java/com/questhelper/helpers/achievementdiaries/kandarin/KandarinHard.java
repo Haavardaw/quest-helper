@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.kandarin;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.KeyringCollection;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.KeyringCollection;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
@@ -239,7 +239,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		waterOrb.addIcon(ItemID.WATER_ORB);
 		seersRooftop = new ObjectStep(this, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
 			"Complete a lap of the Seers' village Rooftop course.");
-		yewLong = new ObjectStep(this, ObjectID.YEW, new WorldPoint(2715, 3460, 0),
+		yewLong = new ObjectStep(this, ObjectID.YEW_TREE_10822, new WorldPoint(2715, 3460, 0),
 			"Cut some yew logs near Seers' Village. Make sure to use the knife on the ones you cut.", axe);
 		cutLongbow = new ItemStep(this, "Use knife on yew logs to make a yew longbow (u)", yewLogs.highlighted(), knife.highlighted());
 		stringBow = new ItemStep(this, "String the bow.", bowString.highlighted(), unstrungYewLong.highlighted());

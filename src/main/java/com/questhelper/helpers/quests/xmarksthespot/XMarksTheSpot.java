@@ -24,8 +24,8 @@
  */
 package com.questhelper.helpers.quests.xmarksthespot;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,7 +44,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.X_MARKS_THE_SPOT
@@ -115,9 +115,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
 			ancientCasket);
+		((NpcStep) speakVeosSarim).addAlternateNpcs(NpcID.VEOS_8630);
 
 		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_8484, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
+		((NpcStep) speakVeosSarimWithoutCasket).addAlternateNpcs(NpcID.VEOS_8630);
 
 		speakVeosSarim.addSubSteps(speakVeosSarimWithoutCasket);
 	}
@@ -149,7 +151,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.ANTIQUE_LAMP, 1),
-			new ItemReward("200 Coins", ItemID.COINS_995, 200),
+			new ItemReward("Coins", ItemID.COINS_995, 200),
 			new ItemReward("A Beginner Clue Scroll", ItemID.CLUE_SCROLL_BEGINNER, 1));
 	}
 

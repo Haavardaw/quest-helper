@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.sheepshearer;
 
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
@@ -38,7 +38,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
 
@@ -167,7 +167,7 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("60 Coins", ItemID.COINS_995, 60));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 60));
 	}
 
 	@Override

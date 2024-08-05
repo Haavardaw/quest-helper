@@ -24,16 +24,16 @@
  */
 package com.questhelper.helpers.quests.shilovillage;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -62,7 +62,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
@@ -70,7 +69,6 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.SHILO_VILLAGE
@@ -179,6 +177,7 @@ public class ShiloVillage extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		torchOrCandle = new ItemRequirement("Lit torch or candle", ItemID.LIT_TORCH);
 		torchOrCandle.addAlternates(ItemID.LIT_CANDLE);
+		torchOrCandle.setTooltip("You will NOT get this item back");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZE_WIRE);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
@@ -359,7 +358,7 @@ public class ShiloVillage extends BasicQuestHelper
 			"Search the dolmen, ready to fight.");
 
 		killNazastarool = new NpcStep(this, NpcID.NAZASTAROOL, new WorldPoint(2892, 9488, 0),
-			"Defeat Nazastrool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very" +
+			"Defeat Nazastarool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very" +
 				" strong against them.");
 		((NpcStep) killNazastarool).addAlternateNpcs(NpcID.NAZASTAROOL_5354, NpcID.NAZASTAROOL_5355);
 		((NpcStep)killNazastarool).addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));

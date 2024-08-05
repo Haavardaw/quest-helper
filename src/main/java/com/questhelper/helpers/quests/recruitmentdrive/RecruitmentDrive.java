@@ -24,16 +24,16 @@
  */
 package com.questhelper.helpers.quests.recruitmentdrive;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.ItemSlots;
@@ -193,9 +193,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		VarbitRequirement finishedRoom = new VarbitRequirement(661, 1);
 
-		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye");
+		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
 		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
-			"Kill Sir Leye to win this challenge. You must use the warhammer or you can't kill him.", true);
+			"Defeat Sir Leye to win this challenge. You must use the steel warhammer or your barehands to deal the final hit on him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
@@ -392,7 +392,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
-				new ItemReward("3000 Coins", ItemID.COINS_995, 3000));
+				new ItemReward("Coins", ItemID.COINS_995, 3000));
 	}
 
 	@Override

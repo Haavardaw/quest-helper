@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.quests.plaguecity;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.rewards.ExperienceReward;
@@ -224,6 +224,7 @@ public class PlagueCity extends BasicQuestHelper
 		gasMask.setTooltip("You can get another from the cupboard in Edmond's house.");
 		book = new ItemRequirement("Book", ItemID.BOOK_1509);
 		bucketOfChocolateMilk = new ItemRequirement("Chocolatey milk", ItemID.CHOCOLATEY_MILK);
+		bucketOfChocolateMilk.setHighlightInInventory(true);
 		hangoverCure = new ItemRequirement("Hangover cure", ItemID.HANGOVER_CURE);
 		warrant = new ItemRequirement("Warrant", ItemID.WARRANT);
 		inPlagueHouse = new ZoneRequirement(plagueHouse1, plagueHouse2);

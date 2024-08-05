@@ -24,8 +24,8 @@
  */
 package com.questhelper.helpers.achievementdiaries.ardougne;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -47,7 +47,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
@@ -154,7 +154,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			"Check what pets you have insured with Probita in East Ardougne (right-click her to Check).");
 
 		wildyLever = new ObjectStep(this, ObjectID.LEVER_1814, new WorldPoint(2561, 3311, 0),
-			"Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return).");
+			"Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
 
 		enterCombatCamp = new ObjectStep(this, ObjectID.GATE_2041, new WorldPoint(2518, 3356, 0),
 			"Enter the Combat Training Camp north of West Ardougne.");

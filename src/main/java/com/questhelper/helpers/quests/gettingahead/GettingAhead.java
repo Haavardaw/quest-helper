@@ -24,16 +24,16 @@
  */
 package com.questhelper.helpers.quests.gettingahead;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -134,18 +134,21 @@ public class GettingAhead extends BasicQuestHelper
 		makeClayHead.addStep(new Conditions(bucket, clay), fillBucket);
 		makeClayHead.addStep(clay, takeBucket);
 		makeClayHead.addStep(pickaxe, mineClay);
+		makeClayHead.addSubSteps(talkToGordonGen);
 		steps.put(18, makeClayHead);
-
 		steps.put(20, talkToGordonGen);
+
 		addFurToHead = new ConditionalStep(this, goUpstairsHouse, "Use the bear fur on the clay head then talk to Gordon.");
 		addFurToHead.addStep(new Conditions(thread, needle), useFurOnHead);
 		addFurToHead.addStep(new Conditions(inUpstairsHouse, needle), getThread);
 		addFurToHead.addStep(inUpstairsHouse, getNeedle);
+		addFurToHead.addSubSteps(talkToGordonGen2);
 		steps.put(22, addFurToHead);
 		steps.put(24, talkToGordonGen2);
 
 		dyeHead = new ConditionalStep(this, takeDye, "Use the red dye on the fur head then talk to Gordon.");
 		dyeHead.addStep(redDye, useDyeOnHead);
+		dyeHead.addSubSteps(talkToGordonGen3);
 		steps.put(26, dyeHead);
 		steps.put(28, talkToGordonGen3);
 
@@ -341,7 +344,7 @@ public class GettingAhead extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("3,000 Coins", ItemID.COINS_995, 3000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 3000));
 	}
 
 	@Override
@@ -358,7 +361,7 @@ public class GettingAhead extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Killing the Beast", Arrays.asList(goUseFlourOnGate, goToMine, returnToGordon),
 			potOfFlour));
 		allSteps.add(new PanelDetails("Making the fake head", Arrays.asList(talkToMary2, makeClayHead, addFurToHead,
-			useDyeOnHead, putUpHead, talkToGordonFinal), bearFur, softClay, hammer, saw, planks, nails, knife, redDye, needle, thread));
+			dyeHead, putUpHead, talkToGordonFinal), bearFur, softClay, hammer, saw, planks, nails, knife, redDye, needle, thread));
 		return allSteps;
 	}
 	

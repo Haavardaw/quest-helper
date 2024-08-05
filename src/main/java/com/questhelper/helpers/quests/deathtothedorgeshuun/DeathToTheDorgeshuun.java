@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.deathtothedorgeshuun;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.npc.FollowerRequirement;
@@ -38,7 +38,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.util.LogicType;
@@ -403,7 +403,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		goTalkToMistag.addStep(inMines, talkToMistag);
 		goTalkToMistag.addStep(inTunnels, talkToKazgar);
 		goTalkToMistag.addStep(inBasement, climbThroughHole);
-		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.");
+		goTalkToMistag.addDialogSteps("What is this favour?", "I'll act as a guide.", "Can you show me the way out of the mines?");
 
 		goTalkToZanik = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.", hamHood2, hamShirt2, hamRobe2, hamBoot2, hamGloves2, hamCloak2, hamLogo2);
 		goTalkToZanik.addStep(inMines, talkToMistagToTravel);
@@ -412,6 +412,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		if (client.getLocalPlayer() != null)
 		{
 			goTalkToZanik.addDialogStep("Yes, I'm " + client.getLocalPlayer().getName() + "!");
+			goTalkToZanik.addDialogStep("Yes, I have two sets of robes!");
 		}
 
 		goHaveZanikFollow = new ConditionalStep(this, goDownToBasement, "Talk to Zanik in Lumbridge Castle's basement.");

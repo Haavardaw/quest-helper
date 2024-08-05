@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.quests.songoftheelves;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -62,7 +62,7 @@ public class AmloddLightPuzzle extends ConditionalStep
 	Requirement hasMirrorsAndCrystal, onF1, onF2, onF0, notResetCrwys, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15,
 		r16, r17, r18, r19;
 
-	public AmloddLightPuzzle(QuestHelper questHelper,ConditionalStep goToF1Steps, ConditionalStep goToF0Steps)
+	public AmloddLightPuzzle(QuestHelper questHelper, ConditionalStep goToF1Steps, ConditionalStep goToF0Steps)
 	{
 		super(questHelper, goToF1Steps);
 		setupItemRequirements();

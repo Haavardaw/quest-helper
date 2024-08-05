@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.quests.contact;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -48,7 +48,7 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import java.util.*;
 
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -222,7 +222,7 @@ public class Contact extends BasicQuestHelper
 			new WorldPoint(2149, 4374, 2),
 			new WorldPoint(2151, 4374, 2),
 
-			new WorldPoint(3304, 9238, 3),
+			new WorldPoint(0, 0, 0),
 
 			new WorldPoint(2154, 4374, 2),
 			new WorldPoint(2157, 4374, 2),
@@ -319,7 +319,7 @@ public class Contact extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
+				new ItemReward("7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
 				new ItemReward("Keris", ItemID.KERIS, 1)
 		);
 	}
@@ -343,7 +343,7 @@ public class Contact extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Help Osman",
 			Arrays.asList(talkToOsmanOutsideSoph, goDownToBankAgain, goDownToDungeonAgain,
-				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, returnToHighPriest), combatGear, food, prayerPotions,
+				goDownToChasmAgain, killGiantScarab, talkToOsmanChasm, pickUpKeris, returnToHighPriest), combatGear, food, prayerPotions,
 			lightSource, tinderbox));
 
 		return allSteps;

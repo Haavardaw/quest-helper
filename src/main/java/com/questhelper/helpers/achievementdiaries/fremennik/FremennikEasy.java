@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -47,7 +47,7 @@ import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
@@ -217,7 +217,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 			"Kill 5 Rock crabs.", true, combatGear);
 		killedCrabs.addAlternateNpcs(NpcID.ROCK_CRAB_102);
 
-		chopOak = new ObjectStep(this, ObjectID.OAK_10820, new WorldPoint(2714, 3664, 0),
+		chopOak = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(2714, 3664, 0),
 			"Chop some oak logs in Rellekka.", axe, tinderbox);
 		chopOak.addIcon(6739);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
@@ -238,7 +238,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		craftTiara.addIcon(ItemID.SILVER_BAR);
 		changeBoots = new NpcStep(this, NpcID.YRSA_3933, new WorldPoint(2625, 3674, 0),
 			"Change your boots at Yrsa's Shoe Store.", coins.quantity(500));
-		goneToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
+		goneToWaterbirth = new NpcStep(this, new int[]{NpcID.JARVALD, NpcID.JARVALD_7205}, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island.");
 		goneToWaterbirth.addDialogStep("What Jarvald is doing.");
 		goneToWaterbirth.addDialogStep("Can I come?");

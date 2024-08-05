@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.dragonslayerii;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -39,7 +39,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.util.LogicType;
@@ -82,7 +82,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		fireWave3Runes, fireSurgeRunes, fireSurge3Runes, runesForFireWaveOrSurge, combatGear, pickaxeHighlighted,
 		aivasDiary, dreamVial, dreamVialWater, dreamVialWithGoutweed, dreamPotion, astralRuneHighlighted, astralRuneShards,
 		groundAstralRune, hammerHighlighted, dreamPotionHighlighted, food, lightSource, rangedCombatGear, dragonfireProtection,
-		venomProtection, salveE, kourendKeyPiece, varrocKeyPiece, karamjaKeyPiece, fremennikKeyPiece, varrockCensusRecords,
+		venomProtection, salveE, kourendKeyPiece, varrockKeyPiece, karamjaKeyPiece, fremennikKeyPiece, varrockCensusRecords,
 		inertLocator, glassblowingPipeHighlighted, dragonstoneHighlighted, locator, ancientKey, dragonKey, antifireShield;
 
 	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17,
@@ -439,7 +439,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE);
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.SEAL_OF_PASSAGE);
-		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderbox = new ItemRequirement(true, "Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		pestleAndMortarHighlighted = new ItemRequirement(true, "Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		bloodRune1 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE);
 		bloodRune3 = new ItemRequirement("Blood rune", ItemID.BLOOD_RUNE, 3);
@@ -533,8 +533,8 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		kourendKeyPiece = new ItemRequirement("Dragon key piece (Kourend)", ItemID.DRAGON_KEY_PIECE_22089);
 		kourendKeyPiece.setTooltip("You can get another from the tomb in the Shayzien Crypt");
-		varrocKeyPiece = new ItemRequirement("Dragon key piece (Varrock)", ItemID.DRAGON_KEY_PIECE_22090);
-		varrocKeyPiece.setTooltip("You can get another by digging in Mort Myre");
+		varrockKeyPiece = new ItemRequirement("Dragon key piece (Varrock)", ItemID.DRAGON_KEY_PIECE_22090);
+		varrockKeyPiece.setTooltip("You can get another by digging in Mort Myre");
 		fremennikKeyPiece = new ItemRequirement("Dragon key piece (Fremmennik)", ItemID.DRAGON_KEY_PIECE);
 		fremennikKeyPiece.setTooltip("You can get another from Ungael");
 		karamjaKeyPiece = new ItemRequirement("Dragon key piece (Kharazi)", ItemID.DRAGON_KEY_PIECE_22091);
@@ -691,6 +691,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAvaAgain = new VarbitRequirement(6107, 50, Operation.GREATER_EQUAL);
 
 		// 6141, presumbly represents location of treasure
+		// 0:  3565, 3445, 0
 		// 10: 3487, 3409, 0
 		// 11: 3442, 3421, 0
 
@@ -714,8 +715,9 @@ public class DragonSlayerII extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToAlec = new NpcStep(this, NpcID.ALEC_KINCADE, new WorldPoint(2458, 2869, 0), "Talk to Alec Kincade outside the Myths' Guild.");
-		talkToAlec.addDialogSteps("How can I gain access to the Guild?", "Yes.");
+		talkToAlec.addDialogSteps("How can I gain access to the guild?", "Yes.");
 		talkToDallas = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(2924, 3146, 0), "Talk to Dallas Jones in the Pub on Musa Point.", pickaxe, combatGear);
+		talkToDallas.addDialogStep("Yes I know it well.");
 		enterVolcano = new ObjectStep(this, ObjectID.ROCKS_11441, new WorldPoint(2857, 3169, 0), "Talk to Dallas in Elvarg's Lair.", pickaxe, combatGear);
 		enterCrandorWall = new ObjectStep(this, ObjectID.WALL_2606, new WorldPoint(2836, 9600, 0), "Talk to Dallas in Elvarg's Lair.");
 		talkToDallasOnCrandor = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(2856, 9645, 0), "Talk to Dallas in Elvarg's Lair.");
@@ -733,7 +735,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		enterHouseOnTheHill = new ObjectStep(this, ObjectID.STAIRS_30681, new WorldPoint(3755, 3869, 0), "Travel to the House on the Hill on Fossil Island. The fastest way here is with the digsite pendant.");
 		enterHouseBasement = new ObjectStep(this, ObjectID.TRAPDOOR_30725, new WorldPoint(3768, 3867, 1), "Go down the trapdoor to the basement.");
 		talkToDallasInHouse = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3762, 3868, 0), "Talk to Dallas.");
-		talkToDallasInHouse.addDialogStep("Ask about the island.");
+		talkToDallasInHouse.addDialogSteps("Ask about the island.", "So how do we know which island to go to?");
 		talkToDallasInHouse.addSubSteps(enterHouseBasement);
 		searchNorthChest = new ObjectStep(this, NullObjectID.NULL_29911, new WorldPoint(3765, 3873, 0), "Search the stone chest in the north of the room. Whilst finding map pieces you can talk to Dallas to give him your current pieces.");
 		searchNorthChest.addDialogStep("Let's talk about the investigation.");
@@ -777,7 +779,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		// Sphinx allows you to always talk to cats: 6144 0->1, 6145 1->0
 
 		talkToOneiromancer = new NpcStep(this, NpcID.ONEIROMANCER, new WorldPoint(2151, 3867, 0), "Talk to the Oneiromancer in the south east of Lunar Isle.", sealOfPassage);
-		talkToOneiromancer.addDialogSteps("Bob's memories", "No thanks.");
+		talkToOneiromancer.addDialogSteps("Bob's memories.", "No thanks.");
 		fillDreamVial = new ObjectStep(this, ObjectID.SINK_16705, new WorldPoint(2091, 3922, 0), "Fill the vial with water.", dreamVial);
 		fillDreamVial.addIcon(ItemID.DREAM_VIAL_EMPTY);
 
@@ -788,13 +790,14 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		lightBrazier = new ObjectStep(this, NullObjectID.NULL_17025, new WorldPoint(2073, 3912, 0),
 			"Equip your combat equipment, food, and light the Brazier in the west of Lunar Isle's town. Be prepared for a fight. You will need melee gear, preferably a crush weapon, to fight.",
-			sealOfPassage, tinderbox, dreamPotion, combatGear);
+			sealOfPassage, tinderbox.highlighted(), dreamPotion, combatGear);
 		lightBrazier.addIcon(ItemID.TINDERBOX);
 
 		usePotionOnFlame = new ObjectStep(this, NullObjectID.NULL_17025, new WorldPoint(2073, 3912, 0),
 			"Use the dream potion on the brazier.",
 			sealOfPassage, dreamPotionHighlighted, combatGear);
 		usePotionOnFlame.addDialogStep("I'm ready.");
+		usePotionOnFlame.addDialogStep("Yes.");
 		usePotionOnFlame.addIcon(ItemID.DREAM_POTION);
 
 		talkToBobToEnterDreamAgain = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(2074, 3912, 0), "Talk to Bob next to the brazier to enter the dream again.", combatGear);
@@ -935,6 +938,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		useKeyOnGrandioseDoors = new ObjectStep(this, NullObjectID.NULL_29872, new WorldPoint(3550, 10425, 0), "Unlock the grandiose door.");
 
 		talkToDallasAfterDoors = new NpcStep(this, NpcID.DALLAS_JONES_8102, new WorldPoint(1566, 5099, 0), "Talk to Dallas Jones to the north.");
+		((NpcStep) talkToDallasAfterDoors).addAlternateNpcs(NpcID.DALLAS_JONES_8103);
 
 		talkToBobAfterRelease = new NpcStep(this, NpcID.BOB_8111, new WorldPoint(3548, 10480, 0), "");
 
@@ -1021,7 +1025,8 @@ public class DragonSlayerII extends BasicQuestHelper
 			new WorldPoint(1698, 5712, 0),
 			new WorldPoint(1698, 5715, 0),
 			new WorldPoint(1702, 5719, 0),
-			new WorldPoint(1702, 5723, 0),
+			new WorldPoint(1702, 5722, 0),
+			new WorldPoint(1705, 5722, 0),
 			new WorldPoint(1708, 5723, 1),
 			new WorldPoint(1708, 5728, 1),
 			new WorldPoint(1708, 5729, 0),
@@ -1090,20 +1095,22 @@ public class DragonSlayerII extends BasicQuestHelper
 
 	public void setupConditionalSteps()
 	{
-		goEnterMithDoorFirstTime = new ConditionalStep(this, enterAncientCavern, "Open the Mithril Door in the Ancient Caverns.", ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrocKeyPiece, hammer);
+		goEnterMithDoorFirstTime = new ConditionalStep(this, enterAncientCavern, "Open the Mithril Door in the Ancient Caverns.", ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrockKeyPiece, hammer);
+		goEnterMithDoorFirstTime.addDialogStep("Yes, I wish to enter the unknown.");
 		goEnterMithDoorFirstTime.addStep(inMithDragonOrbRoom, castFireOnHead);
 		goEnterMithDoorFirstTime.addStep(inMithDragonUpperArea, openMithrilDoor);
 		goEnterMithDoorFirstTime.addStep(inMithDragonGroundArea, goUpToMithrilDragons);
 		goEnterMithDoorFirstTime.addStep(inMithDragonEntranceArea, goDownToBrutalGreenDragons);
 
-		goEnterMithDoorSecondTime = new ConditionalStep(this, enterAncientCavern, "Open the Mithril Door in the Ancient Caverns.", runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrocKeyPiece, hammer);
+		goEnterMithDoorSecondTime = new ConditionalStep(this, enterAncientCavern, "Open the Mithril Door in the Ancient Caverns.", runesForFireWaveOrSurge3, fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrockKeyPiece, hammer);
 		goEnterMithDoorSecondTime.addStep(inMithDragonOrbRoom, castFireOnHead);
 		goEnterMithDoorSecondTime.addStep(inMithDragonUpperArea, openMithrilDoor);
 		goEnterMithDoorSecondTime.addStep(inMithDragonGroundArea, goUpToMithrilDragons);
 		goEnterMithDoorSecondTime.addStep(inMithDragonEntranceArea, goDownToBrutalGreenDragons);
 		goEnterMithDoorFirstTime.addSubSteps(goEnterMithDoorSecondTime);
 
-		goSmithKey = new ConditionalStep(this, enterAncientCavern, "Forge the dragon key on the anvils in the south of the Ancient Caverns.", fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrocKeyPiece, hammer);
+		goSmithKey = new ConditionalStep(this, enterAncientCavern, "Forge the dragon key on the anvils in the south of the Ancient Caverns.", fremennikKeyPiece, karamjaKeyPiece, kourendKeyPiece, varrockKeyPiece, hammer);
+		goSmithKey.addDialogStep("Yes.");
 		goSmithKey.addStep(inMithDragonFurnaceArea, forgeDragonKey);
 		goSmithKey.addStep(inMithDragonGroundArea, climbUpSouthWestStairsAncientCavern);
 		goSmithKey.addStep(inMithDragonUpperArea, goDownFromMithDragons);
@@ -1172,6 +1179,7 @@ public class DragonSlayerII extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Access to the Myths Guild."),
+				// 6140 0->1 means talked to Primula
 				new UnlockReward("Ability to make Super Antifire Potions"),
 				new UnlockReward("Access to the Fountain of Uhld."),
 				new UnlockReward("Access to the Wrath Altar."),
@@ -1221,7 +1229,7 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Unlocking the door", Arrays.asList(goEnterMithDoorFirstTime, castFireOnHead, goSmithKey,
 			goOpenDoorWithKey, openDoorWithoutKey, goTalkToBobAfterRelease), ancientKey, runesForFireWaveOrSurge3, fremennikKeyPiece,
-			karamjaKeyPiece, varrocKeyPiece, kourendKeyPiece, hammer, antifireShield));
+			karamjaKeyPiece, varrockKeyPiece, kourendKeyPiece, hammer, antifireShield));
 
 		allSteps.add(new PanelDetails("Creating an army", Arrays.asList(talkToRoald, talkToBrundtAboutThreat, talkToAmik, talkToLathasOrThoros, enterVarrockDiningRoom, talkToBobAfterDiningRoom)));
 

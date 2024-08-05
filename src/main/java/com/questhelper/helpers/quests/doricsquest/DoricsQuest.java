@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.doricsquest;
 
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -119,7 +119,7 @@ public class DoricsQuest extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("180 Coins", ItemID.COINS_995, 180));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 180));
 	}
 
 	@Override

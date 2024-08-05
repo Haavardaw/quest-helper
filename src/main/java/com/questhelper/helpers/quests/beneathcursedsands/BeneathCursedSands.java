@@ -1,15 +1,15 @@
 package com.questhelper.helpers.quests.beneathcursedsands;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -53,7 +53,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	ItemRequirement coal, tinderbox, ironBar, spade, meat, prayerPotions, fiveCoins;
 
 	// Items Recommended
-	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaosSceptre, food, meleeCombatGear,
+	ItemRequirement waterskins, antipoison, accessToFairyRings, pharaohsSceptre, food, meleeCombatGear,
 		rangedCombatGear, staminaPotions, nardahTeleport;
 
 	// Quest Items
@@ -285,8 +285,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
 		accessToFairyRings.addAlternates(ItemID.LUNAR_STAFF);
-		pharaosSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
-		pharaosSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
+		pharaohsSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
+		pharaohsSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
 		meleeCombatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
@@ -537,7 +537,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaosSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
+		return Arrays.asList(waterskins, antipoison, accessToFairyRings, pharaohsSceptre, meleeCombatGear, food, staminaPotions, nardahTeleport);
 	}
 
 	@Override

@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.shadowofthestorm;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -36,7 +36,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -249,10 +249,11 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	{
 		talkToReen = new NpcStep(this, NpcID.FATHER_REEN, new WorldPoint(3270, 3159, 0), "Talk to Father Reen outside Al Kharid bank.");
 		talkToReen.addDialogStep("That's me!");
+		talkToReen.addDialogStep("Yes.");
 		talkToBadden = new NpcStep(this, NpcID.FATHER_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", silverlight, darkItems);
-		talkToBadden.addDialogSteps("Reen sent me.", "So what do you want me to do?", "How can I do that?");
+		talkToBadden.addDialogSteps("Uzer", "Reen sent me.", "So what do you want me to do?", "How can I do that?");
 		pickMushroom = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
-		dyeSilverlight = new DetailedQuestStep(this, "Use the black mushrooms on Siverlight.", silverlightHighlighted, blackMushroomHighlighted);
+		dyeSilverlight = new DetailedQuestStep(this, "Use the black mushrooms on Silverlight.", silverlightHighlighted, blackMushroomHighlighted);
 		goIntoRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyedEquipped, darkItems);
 
 		pickUpStrangeImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
@@ -269,6 +270,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToMatthew.addDialogStep("Do you know what happened to Josef?");
 		smeltSigil = new DetailedQuestStep(this, "Travel to any furnace with the sigil mould and silver bar and smelt a sigil.", silverBar, sigilMould);
 		talkToGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
+		talkToGolem.addDialogStep("Uzer");
 		talkToGolem.addDialogStep("Did you see anything happen last night?");
 		searchKiln = new SearchKilns(this);
 		readBook = new DetailedQuestStep(this, "Read the book.", bookHighlighted);
@@ -376,7 +378,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToReen)));
-		allSteps.add(new PanelDetails("Infiltrate the cult", Arrays.asList(talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, talkToJennifer, talkToMatthew), silverlight, darkItems));
+		allSteps.add(new PanelDetails("Infiltrate the cult", Arrays.asList(talkToBadden, pickMushroom, dyeSilverlight, goIntoRuin, pickUpStrangeImplement, talkToEvilDave, talkToDenath, talkToJennifer, talkToMatthew), silverlight, darkItems));
 		allSteps.add(new PanelDetails("Uncovering the truth", Arrays.asList(smeltSigil, talkToGolem, searchKiln, readBook, talkToMatthewAfterBook, standInCircle, readIncantation), silverBar, silverlightDyed, combatGear));
 		allSteps.add(new PanelDetails("Defeating Agrith-Naar", Arrays.asList(pickUpSigil, leavePortal, pickUpSigil2, tellDaveToReturn, talkToBaddenAfterRitual, talkToReenAfterRitual, talkToTheGolemAfterRitual, useImplementOnGolem, talkToGolemAfterReprogramming,
 			talkToMatthewToStartFight, standInCircleAgain, incantRitual, killDemon, unequipDarklight), silverlightDyed, combatGear));

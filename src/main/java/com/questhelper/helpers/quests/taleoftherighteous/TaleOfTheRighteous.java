@@ -24,15 +24,13 @@
  */
 package com.questhelper.helpers.quests.taleoftherighteous;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DetailedQuestStep;
@@ -53,8 +51,8 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
@@ -317,7 +315,6 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
 		req.add(new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED));
-		req.add(new FavourRequirement(Favour.SHAYZIEN, 20));
 		req.add(new SkillRequirement(Skill.STRENGTH, 16));
 		req.add(new SkillRequirement(Skill.MINING, 10));
 		return req;
@@ -341,8 +338,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("8,000 Coins", ItemID.COINS_995, 8000),
-				new ItemReward("Shayzien Favour Certificate", ItemID.SHAYZIEN_FAVOUR_CERTIFICATE, 1),
+				new ItemReward("Coins", ItemID.COINS_995, 8000),
 				new ItemReward("A Memoir Page", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 

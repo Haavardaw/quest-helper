@@ -24,9 +24,10 @@
  */
 package com.questhelper.panel;
 
-import com.questhelper.ExternalQuestResources;
-import com.questhelper.HelperConfig;
-import com.questhelper.Icon;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -37,14 +38,12 @@ import com.questhelper.rewards.Reward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import java.awt.event.ItemEvent;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.PluginPanel;
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
@@ -58,10 +57,12 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class QuestOverviewPanel extends JPanel
 {
 	private final QuestHelperPlugin questHelperPlugin;
+	private final QuestManager questManager;
 	public QuestHelper currentQuest;
 
 	private final JPanel questStepsContainer = new JPanel();
@@ -105,9 +106,10 @@ public class QuestOverviewPanel extends JPanel
 
 	private final List<QuestRequirementPanel> requirementPanels = new ArrayList<>();
 
-	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin)
+	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
 		super();
+		this.questManager = questManager;
 		this.questHelperPlugin = questHelperPlugin;
 
 		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -264,7 +266,7 @@ public class QuestOverviewPanel extends JPanel
 		questItemReqs.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
 		headerPanel.add(questItemReqs, BorderLayout.NORTH);
 
-		listPanel.setLayout(new DynamicGridLayout(0, 1, 0, 1));
+		listPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		listPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		requirementPanel.add(headerPanel, BorderLayout.NORTH);
@@ -293,15 +295,22 @@ public class QuestOverviewPanel extends JPanel
 			questNameLabel.setText(quest.getQuest().getName());
 			actionsContainer.setVisible(true);
 
-			// if configs
-			configContainer.setVisible(true);
+			if (quest.getConfigs() != null)
+			{
+				configContainer.setVisible(true);
+			}
 
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
 
 			for (PanelDetails panelDetail : steps)
 			{
-				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep);
+				if (panelDetail.getHideCondition() != null && panelDetail.getHideCondition().check(questHelperPlugin.getClient()))
+				{
+					continue;
+				}
+
+				QuestStepPanel newStep = new QuestStepPanel(panelDetail, currentStep, quest, questHelperPlugin.getClient());
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
 						|| panelDetail.getVars().contains(currentQuest.getVar())))
@@ -356,31 +365,7 @@ public class QuestOverviewPanel extends JPanel
 	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		questStepPanelList.forEach(panel -> {
-			if (panel.panelDetails.getHideCondition() == null || !panel.panelDetails.getHideCondition().check(client))
-			{
-				panel.setVisible(true);
-				boolean highlighted = false;
-				panel.setLockable(panel.panelDetails.getLockingQuestSteps() != null &&
-					(panel.panelDetails.getVars() == null || panel.panelDetails.getVars().contains(currentQuest.getVar())));
-				
-				for (QuestStep step : panel.getSteps())
-				{
-					if (step == newStep || step.getSubsteps().contains(newStep))
-					{
-						highlighted = true;
-						panel.updateHighlight(step);
-						break;
-					}
-				}
-				if (!highlighted)
-				{
-					panel.removeHighlight();
-				}
-			}
-			else
-			{
-				panel.setVisible(false);
-			}
+			panel.updateHighlightCheck(client, newStep, currentQuest);
 		});
 
 		repaint();
@@ -416,7 +401,7 @@ public class QuestOverviewPanel extends JPanel
 
 	private void closeHelper()
 	{
-		questHelperPlugin.shutDownQuestFromSidebar();
+		questManager.shutDownQuestFromSidebar();
 	}
 
 	void updateCollapseText()
@@ -586,13 +571,13 @@ public class QuestOverviewPanel extends JPanel
 
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
-		List<ExternalQuestResources> externalResourcesList;
+		List<String> externalResourcesList;
 		try
 		{
-			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()));
+			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()).getWikiURL());
 		} catch (Exception e)
 		{
-			return;
+			externalResourcesList = Collections.singletonList("https://oldschool.runescape.wiki/w/" + StringUtils.lowerCase(URLEncoder.encode(quest.getQuest().name(), StandardCharsets.UTF_8)));
 		}
 		JLabel externalResources = new JLabel();
 		externalResources.setForeground(Color.GRAY);
@@ -606,25 +591,27 @@ public class QuestOverviewPanel extends JPanel
 		wikiBtn.setToolTipText("Open the official wiki in your browser.");
 
 		//Button variable properties
-		wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+		wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
 
-		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
+		wikiBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseEntered(java.awt.event.MouseEvent evt)
+			{
 				wikiBtn.setForeground(Color.blue.brighter().brighter().brighter());
-				wikiBtn.setText("<html><body style = 'text-decoration:underline'>" + quest.getQuest().getName() + " Wiki </body></html>");
+				wikiBtn.setText("<html><body style = 'text-decoration:underline'>Open RuneScape Wiki</body></html>");
 			}
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
+			public void mouseExited(java.awt.event.MouseEvent evt)
+			{
 				wikiBtn.setForeground(Color.white);
-				wikiBtn.setText("<html><body>" + quest.getQuest().getName() + " Wiki </body></html>");
+				wikiBtn.setText("<html><body>Open RuneScape Wiki</body></html>");
 			}
 		});
 
 		//Access URL values from ExternalQuestResources enum class
-		for (ExternalQuestResources externalResource : externalResourcesList) {
-			if (externalResource.getWikiURL().length() > 0) {
-				wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource.getWikiURL()));
-			}
+		for (String externalResource : externalResourcesList)
+		{
+			wikiBtn.addActionListener((ev) -> LinkBrowser.browse(externalResource));
 		}
 
 		externalQuestResourcesPanel.removeAll();

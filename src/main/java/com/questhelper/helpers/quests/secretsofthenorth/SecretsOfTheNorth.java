@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.quests.secretsofthenorth;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -83,13 +83,14 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		moveToWeissCave, enterWeissCave, fightAssassin, talkToKhazard, talkToHazeelWeiss, searchBarrel, openCentreGate, solveCenterGate,
 		openNorthChest, solveChestPuzzle, getTinderbox,
 		lightNW, lightSE, lightNE, lightSW, openWestChest, openNorthGate, useLeverOnMechanism, pullLever, inspectPillar,
-		combineShards, openIcyChest, openSouthGate, enterCrevice, defeatMuspah, talkToJallan, continueCutscene;
+		combineShards, openIcyChest, openSouthGate, enterCrevice, defeatMuspah,
+		moveToWeissCaveEnd, enterCreviceEnd, enterWeissCaveEnd, talkToJhallan, continueCutscene;
 
-	NpcStep talkToAlmoneOrClivet, talkToHazeel, finishQuest;
+	NpcStep talkToAlomoneOrClivet, talkToHazeel, finishQuest;
 
 	Requirement notTalkedToGuard, notGoneUpstairs, notInspectCeril, notInspectWall, notInspectWindow, notInspectChest,
 		inspectedCrimeScene, toldWindow, toldCeril, toldWall, checkedBarrel, checkedBoulder, checkedBush, checkedStump,
-		checkedBoulder2, checkedBush2, evelotDefeated, talkedToAlmoneOrClivet, talkedToHazeel, talkedToGuard, talkedToClaus, buttonPressed,
+		checkedBoulder2, checkedBush2, evelotDefeated, talkedToAlomoneOrClivet, talkedToHazeel, talkedToGuard, talkedToClaus, buttonPressed,
 		chestPicked, scrollInspected, handedInScroll, hadDustyScroll, talkedNorth, talkedToSnowflake, questioned1, questioned2, assassinFight,
 		assassinDefeated, talkedToKhazard, puzzleStart, centreGateUnlocked, nwBrazier, seBrazier, neBrazier, swBrazier, brazierFin,
 		northGateUnlocked, fixedLever, leverPulled, southGateOpened, jhallanTalkedTo, returnToGuard, gottenIcyKey;
@@ -176,8 +177,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		questionsForHazeel.addStep(new Conditions(inRaftZone, talkedToHazeel), returnStairs);
 		questionsForHazeel.addStep(new Conditions(inHazeelZone, talkedToHazeel), returnRaft);
 		questionsForHazeel.addStep(talkedToHazeel, returnGuard);
-		questionsForHazeel.addStep(new Conditions(talkedToAlmoneOrClivet, inHazeelZone), talkToHazeel);
-		questionsForHazeel.addStep(inHazeelZone, talkToAlmoneOrClivet);
+		questionsForHazeel.addStep(new Conditions(talkedToAlomoneOrClivet, inHazeelZone), talkToHazeel);
+		questionsForHazeel.addStep(inHazeelZone, talkToAlomoneOrClivet);
 		questionsForHazeel.addStep(inRaftZone, boardRaft);
 
 		steps.put(30, questionsForHazeel);
@@ -243,9 +244,12 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		steps.put(78, goingNorth);
 		steps.put(80, goingNorth);
 
-		ConditionalStep finishingUp = new ConditionalStep(this, talkToJallan);
+		ConditionalStep finishingUp = new ConditionalStep(this, moveToWeissCaveEnd);
 		finishingUp.addStep(returnToGuard, finishQuest);
-		finishingUp.addStep(jhallanTalkedTo, continueCutscene);
+		finishingUp.addStep(new Conditions(inMahjarratCave, jhallanTalkedTo), continueCutscene);
+		finishingUp.addStep(inMuspahRoom, talkToJhallan);
+		finishingUp.addStep(inMahjarratCave, enterCreviceEnd);
+		finishingUp.addStep(inWeissCave, enterWeissCaveEnd);
 
 		steps.put(82, finishingUp);
 		steps.put(84, finishingUp);
@@ -307,7 +311,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		checkedBush2 = new VarbitRequirement(14738, 1);
 
 		evelotDefeated = new VarbitRequirement(14722, 28, Operation.GREATER_EQUAL);
-		talkedToAlmoneOrClivet = new VarbitRequirement(14722, 32, Operation.GREATER_EQUAL);
+		talkedToAlomoneOrClivet = new VarbitRequirement(14722, 32, Operation.GREATER_EQUAL);
 		talkedToHazeel = new VarbitRequirement(14722, 36, Operation.GREATER_EQUAL);
 
 		talkedToGuard = new VarbitRequirement(14722, 38, Operation.GREATER_EQUAL);
@@ -362,8 +366,10 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 
 		southGateOpened = new VarbitRequirement(14722, 78, Operation.GREATER_EQUAL);
 
-		jhallanTalkedTo = new VarbitRequirement(14722, 82, Operation.GREATER_EQUAL);
+		jhallanTalkedTo = new VarbitRequirement(14722, 86, Operation.GREATER_EQUAL);
 		returnToGuard = new VarbitRequirement(14722, 88, Operation.GREATER_EQUAL);
+
+		// 14745 0->1 when teleport used from Hazeel
 	}
 
 	public void loadZones()
@@ -444,8 +450,8 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		boardRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2567, 9679, 0),
 			"Board the raft.");
 		// TODO check if player killed Alomone and direct accordingly
-		talkToAlmoneOrClivet = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9671, 0), "Talk to Almone or Clivet inside the cult area.");
-		talkToAlmoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_12093, NpcID.ALOMONE_12094, NpcID.CLIVET, NpcID.CLIVET_12095);
+		talkToAlomoneOrClivet = new NpcStep(this, NpcID.ALOMONE, new WorldPoint(2607, 9671, 0), "Talk to Alomone or Clivet inside the cult area.");
+		talkToAlomoneOrClivet.addAlternateNpcs(NpcID.ALOMONE_12093, NpcID.ALOMONE_12094, NpcID.CLIVET, NpcID.CLIVET_12095);
 		talkToHazeel = new NpcStep(this, NpcID.HAZEEL_12050, new WorldPoint(2607, 9672, 0),
 			"Talk to Hazeel.");
 		returnRaft = new ObjectStep(this, ObjectID.RAFT, new WorldPoint(2606, 9693, 0),
@@ -506,7 +512,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 			"Talk to General Khazard.");
 		talkToHazeelWeiss = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2903, 10335, 0), "Talk to Hazeel to the west and tell him about what happened.");
 		searchBarrel = new ObjectStep(this, ObjectID.BARREL_46609, new WorldPoint(2923, 10322, 0),
-			"Search the barrel south of the room you fought the assasin.");
+			"Search the barrel south of the room you fought the assassin.");
 		openCentreGate = new ObjectStep(this, ObjectID.GATE_46602, new WorldPoint(2924, 10329, 0),
 			"Enter the centre room. Use the code \"BLOOD\" to unlock the gate.");
 		solveCenterGate = new SolveDoorCode(this);
@@ -554,14 +560,20 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 
 		defeatMuspah = new NpcStep(this, NpcID.STRANGE_CREATURE_12074, new WorldPoint(2849, 4259, 0), "Defeat the Strange Creature.");
 		((NpcStep) defeatMuspah).addAlternateNpcs(NpcID.STRANGE_CREATURE_12073, NpcID.STRANGE_CREATURE, NpcID.STRANGE_CREATURE_12075, NpcID.STRANGE_CREATURE_12075);
-
-		talkToJallan = new NpcStep(this, NpcID.JHALLAN, "Speak to Jhallan.");
-		continueCutscene = new NpcStep(this, NpcID.HAZEEL_12051,
-			"Continue the cutscene and then talk to Hazeel for a teleport to Ardougne.");
+		moveToWeissCaveEnd = new ObjectStep(this, ObjectID.STAIRS_33234, new WorldPoint(2867, 3940, 0),
+		"Speak to Jhallan in the Muspah room.");
+		enterWeissCaveEnd = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
+			"Speak to Jhallan in the Muspah room.");
+		enterCreviceEnd = new ObjectStep(this, ObjectID.CREVICE_46597, new WorldPoint(2908, 10317, 0),
+			"Speak to Jhallan in the Muspah room.");
+		talkToJhallan = new NpcStep(this, NpcID.JHALLAN, "Speak to Jhallan in the Muspah room.");
+		talkToJhallan.addSubSteps(moveToWeissCaveEnd, enterWeissCaveEnd, enterCreviceEnd);
+		continueCutscene = new NpcStep(this, NpcID.HAZEEL_12051, new WorldPoint(2926, 10350, 0),
+			"Talk to Hazeel inside the ruins for a teleport to Ardougne.");
 		continueCutscene.addDialogStep("Yes.");
 		finishQuest = new NpcStep(this, NpcID.GUARD_12087, new WorldPoint(2570, 3276, 0),
 			"Return to the guard outside of the Carnillean Mansion in East Ardougne to finish the quest. " +
-				"Talk to Hazeel for a teleport to Ardougne");
+				"Talk to Hazeel for a teleport to Ardougne.");
 		finishQuest.addAlternateNpcs(NpcID.HAZEEL_12051);
 		finishQuest.addDialogStep("Yes.");
 	}
@@ -636,7 +648,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 				speakToEvelot), coins, combatGear));
 
 		allSteps.add(new PanelDetails("The Mysterious Benefactor",
-			Arrays.asList(enterCave, boardRaft, talkToAlmoneOrClivet, talkToHazeel, returnGuard, ladderToClaus, talkToClaus,
+			Arrays.asList(enterCave, boardRaft, talkToAlomoneOrClivet, talkToHazeel, returnGuard, ladderToClaus, talkToClaus,
 				examineShelves, examineWall, lockpickChest, inspectScroll, returnToHazeel), lockpick));
 
 		allSteps.add(new PanelDetails("In The North",
@@ -648,7 +660,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 
 
 		allSteps.add(new PanelDetails("Secrets of the Dungeon",
-			Arrays.asList(enterCrevice, defeatMuspah, talkToJallan), combatGear));
+			Arrays.asList(enterCrevice, defeatMuspah, talkToJhallan, continueCutscene, finishQuest), combatGear));
 
 		return allSteps;
 	}

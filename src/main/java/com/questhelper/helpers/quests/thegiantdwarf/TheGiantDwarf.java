@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.thegiantdwarf;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarPlayer;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
@@ -40,7 +40,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.player.WeightRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -60,13 +60,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @SuppressWarnings("CheckStyle")
 @QuestDescriptor(
@@ -217,7 +216,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_NPC_TEXT,
+			new WidgetTextRequirement(ComponentID.DIALOG_NPC_TEXT,
 				"Let me think... I believe it is on the top shelf of one of<br>the bookcases in the library, because it is such an old<br>book.",
 				"Well, thanks, I'll have a look."
 			),
@@ -433,7 +432,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			"Go to the upper floor of the market.");
 
 		talkToSecretary = new NpcStep(this, NpcID.BLUE_OPAL_SECRETARY, new WorldPoint(2869, 10205, 1),
-			"Keep talking to the same secretary and complete the tasks given. If you don't want to do one of the task, " +
+			"Keep talking to the same secretary and complete the tasks given. If you don't want to do one of the tasks, " +
 				"just talk to them again for a different one.");
 		//TODO: Add a way to check which company is chosen
 		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.PURPLE_PEWTER_SECRETARY, NpcID.GREEN_GEMSTONE_SECRETARY,

@@ -27,17 +27,16 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.questhelper.VisibilityHelper;
+import com.questhelper.tools.VisibilityHelper;
 import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestVarbits;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.choice.DialogChoiceChange;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
-import com.questhelper.steps.choice.WidgetLastState;
 import com.questhelper.steps.choice.WidgetTextChange;
 import com.questhelper.steps.choice.WidgetChoiceStep;
 import com.questhelper.steps.choice.WidgetChoiceSteps;
@@ -54,11 +53,13 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -132,6 +133,9 @@ public abstract class QuestStep implements Module
 	protected WidgetChoiceSteps widgetChoices = new WidgetChoiceSteps();
 
 	@Getter
+	protected List<WidgetHighlights> widgetsToHighlight = new ArrayList<>();
+
+	@Getter
 	private final List<QuestStep> substeps = new ArrayList<>();
 
 	@Getter
@@ -140,6 +144,8 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	private boolean showInSidebar = true;
+
+	protected String lastDialogSeen = "";
 
 	public QuestStep(QuestHelper questHelper)
 	{
@@ -217,7 +223,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID) // 219
+		if (event.getGroupId() == InterfaceID.DIALOG_OPTION)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
@@ -253,7 +259,7 @@ public abstract class QuestStep implements Module
 
 	public void highlightChoice()
 	{
-		choices.checkChoices(client);
+		choices.checkChoices(client, lastDialogSeen);
 	}
 
 	public void setText(String text)
@@ -314,6 +320,13 @@ public abstract class QuestStep implements Module
 		}
 	}
 
+	public void addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
+	{
+		DialogChoiceStep choice = new DialogChoiceStep(questHelper.getConfig(), dialogString);
+		choice.setExpectedPreviousLine(choiceValue);
+		choices.addChoice(choice);
+	}
+
 	public void addDialogChange(String choice, String newText)
 	{
 		choices.addChoice(new DialogChoiceChange(questHelper.getConfig(), choice, newText));
@@ -342,19 +355,27 @@ public abstract class QuestStep implements Module
 		widgetChoices.addChoice(new WidgetTextChange(questHelper.getConfig(), choice, groupID, childID, newText));
 	}
 
-	public void addWidgetLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue, int choiceGroupId, int choiceChildId)
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		WidgetLastState conditionWidget = new WidgetLastState(questHelper.getConfig(), widgetValue, widgetGroupID, widgetChildID);
-		widgetChoices.addChoice(conditionWidget);
-
-		WidgetChoiceStep newWidgetChoice = new WidgetChoiceStep(questHelper.getConfig(), choiceValue, choiceGroupId, choiceChildId);
-		newWidgetChoice.setWidgetToCheck(conditionWidget);
-		widgetChoices.addChoice(newWidgetChoice);
+		if (chatMessage.getType() == ChatMessageType.DIALOG)
+		{
+			lastDialogSeen = chatMessage.getMessage();
+		}
 	}
 
-	public void addDialogLastLoadedCondition(String widgetValue, int widgetGroupID, int widgetChildID, String choiceValue)
+	public void clearWidgetHighlights() {
+		widgetsToHighlight.clear();
+	}
+
+	public void addWidgetHighlight(int groupID, int childID)
 	{
-		addWidgetLastLoadedCondition(widgetValue, widgetGroupID, widgetChildID, choiceValue, 219, 1);
+		widgetsToHighlight.add(new WidgetHighlights(groupID, childID));
+	}
+
+	public void addWidgetHighlightWithItemIdRequirement(int groupID, int childID, int itemID, boolean checkChildren)
+	{
+		widgetsToHighlight.add(new WidgetHighlights(groupID, childID, itemID, checkChildren));
 	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)

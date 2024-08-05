@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.grimtales;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -37,7 +37,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
@@ -117,7 +117,7 @@ public class GrimTales extends BasicQuestHelper
 		getHelmet.addStep(new Conditions(inHouse, shrinkPotion), drinkPotion);
 		getHelmet.addStep(new Conditions(inBasement, shrinkPotion), leaveBasement);
 		getHelmet.addStep(new Conditions(shrinkPotion), enterWitchsHouseWithPotion);
-		getHelmet.addStep(new Conditions(unlockedPiano), makePotions);
+		getHelmet.addStep(new Conditions(searchedPiano), makePotions);
 		getHelmet.addStep(new Conditions(inBasement, unlockedPiano), searchPiano);
 		getHelmet.addStep(new Conditions(inPianoWidget, talkedToMiazrqa, pressed8), lowerAAgain);
 		getHelmet.addStep(new Conditions(inPianoWidget, talkedToMiazrqa, pressed7), lowerG);
@@ -289,7 +289,7 @@ public class GrimTales extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
-		talkToSylas.addDialogStep("Yes");
+		talkToSylas.addDialogStep("Yes.");
 		talkToGrimgnash = new NpcStep(this, NpcID.GRIMGNASH, new WorldPoint(2862, 3511, 0), "Talk to Grimgnash in the north east of White Wolf Mountain.");
 		talkToGrimgnash.addDialogSteps("I heard you were a great and mighty Griffin!", "There once was a graveyard filled with undead.", "There lived a skeleton named Skullrot.",
 			"Skullrot was insane!", "Skullrot hungrily grabbed the gnome's hair.", "Started to strangle the poor gnome.", "He saw some bones lying in the corner.");

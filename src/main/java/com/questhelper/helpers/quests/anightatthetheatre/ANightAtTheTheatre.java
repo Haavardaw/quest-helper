@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.quests.anightatthetheatre;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -485,11 +485,11 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 			enterVerSinhazaCrypts, killVyrewatchForKey, unlockTheCryptGate, searchTheCoffinInVerSinhazaCrypts,
 			speakWithMysteriousStrangerWithRanisHead, speakMoreWithMysteriousStranger, enterSpiderCave, searchSpiderCaveSkeleton,
 			readStickyNote, speakWithDaerKrand, returnToSpiderCave, returnToMysteriousStrangerWithEggs,
-			mysteriousStrangerCutscenes), combatGear, food.quantity(20), flail, saw, antiVenom, drakansMedallion));
+			mysteriousStrangerCutscenes), combatGear, food, flail, saw, antiVenom, drakansMedallion));
 
 		allSteps.add(new PanelDetails("In Touch with Nature", Arrays.asList(goToNatureGrotto, goToHesporiFight, fightHespori,
 			chopHesporiForBark, returnToMysteriousStrangerWithBark, mysteriousStrangerCutscenes2), combatGear,
-			food.quantity(20),
+			food,
 			ghostSpeakAmulet, axe, antipoison));
 
 		allSteps.add(new PanelDetails("Theatre of Blood", Arrays.asList(completeTob, speakWithMysteriousStrangerToFinish)));

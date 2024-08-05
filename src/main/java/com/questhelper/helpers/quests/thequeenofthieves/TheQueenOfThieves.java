@@ -24,18 +24,16 @@
  */
 package com.questhelper.helpers.quests.thequeenofthieves;
 
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.Favour;
-import com.questhelper.requirements.player.FavourRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -227,7 +225,6 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	{
 		return Arrays.asList(
 			new SkillRequirement(Skill.THIEVING, 20),
-			new FavourRequirement(Favour.PISCARILIUS, 20),
 			new QuestRequirement(QuestHelperQuest.CLIENT_OF_KOUREND, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED)
 		);
@@ -249,8 +246,7 @@ public class TheQueenOfThieves extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("2,000 Coins", ItemID.COINS_995, 2000),
-			new ItemReward("A Piscarilius Favour Certificate", ItemID.PISCARILIUS_FAVOUR_CERTIFICATE, 1),
+			new ItemReward("Coins", ItemID.COINS_995, 2000),
 			new ItemReward("A page for Kharedst's Memoirs", ItemID.KHAREDSTS_MEMOIRS, 1));
 	}
 

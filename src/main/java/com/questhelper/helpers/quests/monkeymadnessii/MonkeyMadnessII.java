@@ -24,12 +24,12 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
@@ -43,7 +43,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -227,9 +227,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		steps.put(130, talkToNieve);
 
-		ConditionalStep defendingTheTree = new ConditionalStep(this, killGorillasInStronghold);
-		defendingTheTree.addStep(killedGorillas, enterNorthOfTree);
-		steps.put(140, defendingTheTree);
+		steps.put(140, killGorillasInStronghold);
 
 		ConditionalStep goDefeatDemonicAndTorturedGorillas = new ConditionalStep(this, enterNorthOfTree);
 		goDefeatDemonicAndTorturedGorillas.addStep(inCrashSiteCavern, killTorturedAndDemonic);
@@ -682,30 +680,30 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return Arrays.asList(
-				new ExperienceReward(Skill.SLAYER, 80000),
-				new ExperienceReward(Skill.AGILITY, 60000),
-				new ExperienceReward(Skill.THIEVING, 50000),
-				new ExperienceReward(Skill.HUNTER, 50000));
+			new ExperienceReward(Skill.SLAYER, 80000),
+			new ExperienceReward(Skill.AGILITY, 60000),
+			new ExperienceReward(Skill.THIEVING, 50000),
+			new ExperienceReward(Skill.HUNTER, 50000));
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2 x 50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
-				new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
-				new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
+			new ItemReward("50,000 Experience Lamps (Any Combat Skill)", ItemID.ANTIQUE_LAMP, 2), //4447 is placeholder for filter
+			new ItemReward("A Royal Seed Pod", ItemID.ROYAL_SEED_POD, 1),
+			new ItemReward("A pet monkey", ItemID.MONKEY_19556, 1));
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(
-				new UnlockReward("Access to Demonic Gorillas"),
-				new UnlockReward("A new Gnome Glider location"),
-				new UnlockReward("Access to a bank on Ape Atoll"),
-				new UnlockReward("Ability to wield the Heavy Ballista"),
-				new UnlockReward("Access to Maniacal Monkey hunting area"));
+			new UnlockReward("Access to Demonic Gorillas"),
+			new UnlockReward("A new Gnome Glider location"),
+			new UnlockReward("Access to a bank on Ape Atoll"),
+			new UnlockReward("Ability to wield the Heavy Ballista"),
+			new UnlockReward("Access to Maniacal Monkey hunting area"));
 	}
 
 	@Override

@@ -24,7 +24,7 @@
  */
 package com.questhelper.steps.overlay;
 
-import com.questhelper.QuestHelperWorldMapPoint;
+import com.questhelper.tools.QuestHelperWorldMapPoint;
 import com.questhelper.steps.tools.QuestPerspective;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -42,31 +42,49 @@ import net.runelite.api.coords.WorldPoint;
 
 public class DirectionArrow
 {
+	/**
+	 * @param client the {@link Client}
+	 * @return the rough number of tiles distance the minimap can draw
+	 */
+	public static int getMaxMinimapDrawDistance(Client client)
+	{
+		var minimapZoom = client.getMinimapZoom();
+		if (minimapZoom > 0.0)
+		{
+			return (int) (64.0 / client.getMinimapZoom());
+		}
+		return 16;
+	}
+
 	public static void renderMinimapArrow(Graphics2D graphics, Client client, WorldPoint worldPoint, Color color)
 	{
-		final int MAX_DRAW_DISTANCE = 16;
+		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{
 			return;
 		}
 
-		WorldPoint playerLocation = player.getWorldLocation();
+		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		if (playerRealLocation == null) return;
 
-		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, worldPoint);
-
-		if (wp == null)
+		if (worldPoint == null)
 		{
 			return;
 		}
 
-		if (wp.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
 		{
-			createMinimapDirectionArrow(graphics, client, wp, color);
+			createMinimapDirectionArrow(graphics, client, playerRealLocation, worldPoint, color);
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, wp);
+		WorldPoint fakeDestinationWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
+
+		if (fakeDestinationWp == null) return;
+
+		LocalPoint lp = LocalPoint.fromWorld(client, fakeDestinationWp);
+
 		if (lp == null)
 		{
 			return;
@@ -84,7 +102,7 @@ public class DirectionArrow
 		drawMinimapArrow(graphics, line, color);
 	}
 
-	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint wp, Color color)
+	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint playerRealWp, WorldPoint wp, Color color)
 	{
 		Player player = client.getLocalPlayer();
 
@@ -100,7 +118,7 @@ public class DirectionArrow
 
 		Point playerPosOnMinimap = player.getMinimapLocation();
 
-		Point destinationPosOnMinimap = QuestPerspective.getMinimapPoint(client, player.getWorldLocation(), wp);
+		Point destinationPosOnMinimap = QuestPerspective.getMinimapPoint(client, playerRealWp, wp);
 
 		if (playerPosOnMinimap == null || destinationPosOnMinimap == null)
 		{

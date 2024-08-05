@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -58,7 +58,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 import javax.annotation.Nonnull;
@@ -286,9 +286,9 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM).alsoCheckBank(questBank),
 				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE)).alsoCheckBank(questBank)
 		));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 88));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 88, true));
 		reqs.add(new SkillRequirement(Skill.STRENGTH, 70));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 78));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 78, true));
 		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 75));
 
 		reqs.add(allQuests);
@@ -323,7 +323,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails adamantitePlatebodySteps = new PanelDetails("Adamantite Platebody",
-			Arrays.asList(moveToDraySewer, addyPlatebody), new SkillRequirement(Skill.SMITHING, 88),
+			Arrays.asList(moveToDraySewer, addyPlatebody), new SkillRequirement(Skill.SMITHING, 88, true),
 			addyBar.quantity(5), hammer);
 		adamantitePlatebodySteps.setDisplayCondition(notAddyPlatebody);
 		adamantitePlatebodySteps.setLockingStep(addyPlatebodyTask);
@@ -336,7 +336,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allSteps.add(questCapeEmoteSteps);
 
 		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUndergroundChest,
-			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78), deathToDorg,
+			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78, true), deathToDorg,
 			lightsource, lockpick);
 		richChestSteps.setDisplayCondition(notRichChest);
 		richChestSteps.setLockingStep(richChestTask);

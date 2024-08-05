@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.quests.thefremenniktrials;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
@@ -39,7 +39,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -65,7 +65,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_FREMENNIK_TRIALS
@@ -320,6 +320,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		goldenWool = new ItemRequirement("Golden wool", ItemID.GOLDEN_WOOL);
 		goldenFleece = new ItemRequirement("Golden fleece", ItemID.GOLDEN_FLEECE);
+		goldenFleece.addAlternates(ItemID.GOLDEN_WOOL);
 
 		enchantedLyre = new ItemRequirement("Enchanted lyre", ItemID.ENCHANTED_LYRE);
 		strangeObject = new ItemRequirement("Strange object", ItemID.STRANGE_OBJECT);
@@ -396,7 +397,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		inQuestJournal = new WidgetTextRequirement(WidgetInfo.DIARY_QUEST_WIDGET_TITLE, "The Fremennik Trials");
+		inQuestJournal = new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Fremennik Trials");
 
 		Requirement syncedReqs = new Conditions(true, LogicType.OR, inQuestJournal,
 			new DialogRequirement("I think I would enjoy the challenge"));
@@ -457,7 +458,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		hasPlacedStrangeObject = new RuneliteRequirement(configManager, "fremmytrialsplacedstrangeobject",
 			new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_PLAYER_TEXT,
+			new WidgetTextRequirement(ComponentID.DIALOG_PLAYER_TEXT,
 				"That is going to make a really loud bang when it goes off!"),
 			new ChatMessageRequirement("You put the lit strange object into the pipe."))
 		);
@@ -598,6 +599,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		finishedThorvaldTask = new RuneliteRequirement(configManager, "fremmytrialsthorvaldfinished",
 			new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("Congratulations! You have completed the warrior's trial!"),
+				new ChatMessageRequirement("Congratulations! You have completed the warriors trial!"),
 			new WidgetTextRequirement(119, 3, true, "I now have the Warrior's vote"))
 		);
 
@@ -730,15 +732,14 @@ public class TheFremennikTrials extends BasicQuestHelper
 		useStrangeObjectOnPipe.addIcon(ItemID.LIT_STRANGE_OBJECT);
 		useStrangeObject.addSubSteps(useStrangeObjectOnPipe);
 		getKegOfBeer = new DetailedQuestStep(this, new WorldPoint(2660, 3676, 0), "Pick up a keg of beer in the longhall.", kegOfBeer);
-		useAlcoholFreeOnKeg = new DetailedQuestStep(this, new WorldPoint(2658, 3673, 0), "Use the low alcohol beer on the keg of beer whilst in the longhall.", alcoholFreeBeer, kegOfBeer);
+		useAlcoholFreeOnKeg = new DetailedQuestStep(this, new WorldPoint(2658, 3673, 0), "Use the low alcohol beer on the keg of beer whilst in the longhall.", alcoholFreeBeer.highlighted(), kegOfBeer.highlighted());
 
 		cheatInBeerDrinking = new NpcStep(this, NpcID.MANNI_THE_REVELLER, new WorldPoint(2658, 3675, 0), "Talk to Manni the Reveller to cheat in the competition.", kegOfBeer);
 		cheatInBeerDrinking.addDialogStep("Ask about becoming a Fremennik");
 		cheatInBeerDrinking.addDialogStep("Yes");
 
 		talkToSigli = new NpcStep(this, NpcID.SIGLI_THE_HUNTSMAN, new WorldPoint(2658, 3650, 0), "Talk to Sigli south of the longhall for a hunters' talisman.");
-		talkToSigli.addDialogStep("What's a Draugen?");
-		talkToSigli.addDialogStep("Yes");
+		talkToSigli.addDialogSteps("Ask about becoming a Fremennik", "What's a Draugen?", "Yes");
 
 		huntDraugen = new DetailedQuestStep(this, "Use the hunter's talisman to hunt down the Draugen.");
 
@@ -974,7 +975,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{
-		return new QuestPointReward(2);
+		return new QuestPointReward(3);
 	}
 
 	@Override

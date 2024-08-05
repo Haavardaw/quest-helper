@@ -28,17 +28,18 @@ import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.questhelper.ExternalQuestResources;
-import com.questhelper.HelperConfig;
-import com.questhelper.QuestBank;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.playermadesteps.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -220,6 +221,11 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public int getVar()
 	{
 		return quest.getVar(client);
+	}
+
+	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+
 	}
 
 	public abstract void setupRequirements();

@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -52,7 +52,7 @@ import java.util.List;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 
 @QuestDescriptor(
@@ -144,8 +144,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		lighthouseTask.addStep(inWaterbirthIsland, moveToDagCave);
 		lighthouseTask.addStep(inDagCave, dropPetRock);
 		lighthouseTask.addStep(inDagCave_2, moveToAxeSpot);
-		lighthouseTask.addStep(inDagCave_3, activateSpecial);
 		lighthouseTask.addStep(new Conditions(inDagCave_3, specialAttackEnabled), throwAxe);
+		lighthouseTask.addStep(inDagCave_3, activateSpecial);
 		lighthouseTask.addStep(inDagCave_4, moveToDagCave1);
 		lighthouseTask.addStep(inDagCave1, moveToDagCave2);
 		lighthouseTask.addStep(inDagCave2, moveToDagCave3);
@@ -194,6 +194,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		staff = new ItemRequirement("Dramen or Lunar staff", ItemCollections.FAIRY_STAFF).showConditioned(notTravelMisc).isNotConsumed();
 		butterFlyJar = new ItemRequirement("Butterfly Jar", ItemID.BUTTERFLY_JAR).showConditioned(notSnowyKnight).isNotConsumed();
 		butterFlyNet = new ItemRequirement("Butterfly Net", ItemID.BUTTERFLY_NET).showConditioned(notSnowyKnight).isNotConsumed();
+		butterFlyNet.addAlternates(ItemID.MAGIC_BUTTERFLY_NET);
+		butterFlyNet.setTooltip("Alternatively, use Magic Butterfly Net");
 		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK).showConditioned(new Conditions(LogicType.OR,
 			notPetRockPOH, notLighthouse)).isNotConsumed();
 		petRock.setTooltip("Obtained from Askeladden in Rellekka");
@@ -418,6 +420,8 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
 			"43 Prayer for protection prayers"));
 		req.add(olafsQuest);
+		req.add(eaglesPeak);
+		req.add(betweenARock);
 		return req;
 	}
 

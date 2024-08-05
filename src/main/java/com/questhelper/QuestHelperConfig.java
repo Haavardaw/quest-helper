@@ -237,7 +237,6 @@ public interface QuestHelperConfig extends Config
 		FILLED_OUTLINE
 	}
 
-
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",

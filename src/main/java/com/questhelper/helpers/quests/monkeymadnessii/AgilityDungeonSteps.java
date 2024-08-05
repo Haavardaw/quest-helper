@@ -24,7 +24,7 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -32,7 +32,7 @@ import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -591,26 +591,26 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	{
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			path1SouthIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path2NorthIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path2NorthIsWrongChat2.validateCondition(client, chatMessage.getMessage());
-			path3SouthIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path4NorthIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5WestIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5MiddleIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5EastIsWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5MiddleToEastWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5MiddleToWestWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5EastToMiddleWrongChat.validateCondition(client, chatMessage.getMessage());
-			path5WestToMiddleWrongChat.validateCondition(client, chatMessage.getMessage());
-			path6WestIsWrongChat.validateCondition(client, chatMessage.getMessage());
+			path1SouthIsWrongChat.validateCondition(client, chatMessage);
+			path2NorthIsWrongChat.validateCondition(client, chatMessage);
+			path2NorthIsWrongChat2.validateCondition(client, chatMessage);
+			path3SouthIsWrongChat.validateCondition(client, chatMessage);
+			path4NorthIsWrongChat.validateCondition(client, chatMessage);
+			path5WestIsWrongChat.validateCondition(client, chatMessage);
+			path5MiddleIsWrongChat.validateCondition(client, chatMessage);
+			path5EastIsWrongChat.validateCondition(client, chatMessage);
+			path5MiddleToEastWrongChat.validateCondition(client, chatMessage);
+			path5MiddleToWestWrongChat.validateCondition(client, chatMessage);
+			path5EastToMiddleWrongChat.validateCondition(client, chatMessage);
+			path5WestToMiddleWrongChat.validateCondition(client, chatMessage);
+			path6WestIsWrongChat.validateCondition(client, chatMessage);
 			for (MM2AgilityNodes mm2AgilityNode : fifthSectionMap)
 			{
 				for (int i = 0; i < mm2AgilityNode.getPaths().length; i++)
 				{
 					if (mm2AgilityNode.getPaths()[i] != null)
 					{
-						mm2AgilityNode.getPaths()[i].getWrongWay().validateCondition(client, chatMessage.getMessage());
+						mm2AgilityNode.getPaths()[i].getWrongWay().validateCondition(client, chatMessage);
 					}
 				}
 			}

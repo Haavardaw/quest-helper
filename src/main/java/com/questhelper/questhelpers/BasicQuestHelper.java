@@ -86,9 +86,4 @@ public abstract class BasicQuestHelper extends QuestHelper
 	}
 
 	public abstract Map<Integer, QuestStep> loadSteps();
-
-	protected Requirement nor(Requirement... condition)
-	{
-		return new Conditions(LogicType.NOR, condition);
-	}
 }

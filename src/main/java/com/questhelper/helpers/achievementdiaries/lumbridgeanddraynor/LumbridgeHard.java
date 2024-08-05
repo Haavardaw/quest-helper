@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.achievementdiaries.lumbridgeanddraynor;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -60,7 +60,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
 
@@ -119,9 +119,9 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		doHard.addStep(notWakaToEdge, wakaToEdgeTask);
 
 		powerAmmyTask = new ConditionalStep(this, moveToLumby);
-		powerAmmyTask.addStep(inLumby, smeltAmmy);
-		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
 		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmulet), powerAmmy);
+		powerAmmyTask.addStep(new Conditions(inLumby, madeAmuletU, diamondAmuletU), stringAmmy);
+		powerAmmyTask.addStep(inLumby, smeltAmmy);
 		doHard.addStep(notPowerAmmy, powerAmmyTask);
 
 		lightMiningHelmTask = new ConditionalStep(this, moveToBasementForHelm);
@@ -208,7 +208,10 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notBelladonna).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBelladonna).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notBelladonna).isNotConsumed();
-		gloves = new ItemRequirement("Gloves", ItemCollections.GLOVES).showConditioned(notBelladonna).isNotConsumed();
+		gloves = new ItemRequirement("Gloves", ItemCollections.BELLADONNA_GLOVES).showConditioned(notBelladonna).isNotConsumed();
+		gloves.addAlternates(ItemCollections.GRACEFUL_GLOVES);
+		gloves.setUrlSuffix("Belladonna#Gloves");
+		gloves.setTooltip("'Go to wiki..' to see valid options for handling belladonna");
 		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES)
 			.showConditioned(new Conditions(LogicType.OR, notHundredTears, notTrainToKeld)).isNotConsumed();
 
@@ -273,8 +276,8 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		stringAmmy = new ItemStep(this, "String the diamond amulet.", ballOfWool.highlighted(), diamondAmuletU.highlighted());
 		powerAmmy = new ItemStep(this, "Enchant the strung diamond amulet.", diamondAmulet, cosmicRune.quantity(1),
 			earthRune10);
-		moveToLumby = new TileStep(this, new WorldPoint(3228, 3238, 0),
-			"Move to the Lumbridge smithy.", ballOfWool, cutDiamond, goldBar);
+		moveToLumby = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(3227, 3257, 0),
+			"Move to the Lumbridge furnace.", ballOfWool, cutDiamond, goldBar);
 
 		moveToBasementForHelm = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", miningHelm, tinderbox);

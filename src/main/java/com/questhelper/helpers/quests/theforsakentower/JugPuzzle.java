@@ -26,14 +26,14 @@ package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -54,8 +54,8 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -119,7 +119,7 @@ public class JugPuzzle extends QuestStep implements OwnerStep
 
 	protected void updateSteps()
 	{
-		Widget widget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		Widget widget = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
 
 		if (widget != null)
 		{

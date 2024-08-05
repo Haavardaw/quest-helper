@@ -24,12 +24,12 @@
  */
 package com.questhelper.helpers.quests.thegolem;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -48,8 +48,8 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.Zone;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ConditionalStep;
@@ -288,7 +288,7 @@ public class TheGolem extends BasicQuestHelper
 
 		useImplementOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
 		useImplementOnGolem.addIcon(ItemID.STRANGE_IMPLEMENT);
-		useProgramOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", programHighlight);
+		useProgramOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
 		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
 
 		useStatuette = new ObjectStep(this, NullObjectID.NULL_6306, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);
@@ -357,7 +357,7 @@ public class TheGolem extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shanty Pass to Uzer."));
+		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shantay Pass to Uzer."));
 	}
 
 	@Override
@@ -371,7 +371,7 @@ public class TheGolem extends BasicQuestHelper
 			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet)));
 		allSteps.add(new PanelDetails("Opening the portal", Arrays.asList(enterRuin, useStatuette, turnStatue1,
 			enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
-			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useProgramOnGolem), vial, pestleAndMortar, papyrus));
+			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem), vial, pestleAndMortar, papyrus));
 
 		return allSteps;
 	}

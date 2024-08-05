@@ -25,18 +25,18 @@
  */
 package com.questhelper.helpers.quests.taibwowannaitrio;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarPlayer;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarPlayer;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
@@ -69,7 +69,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.TAI_BWO_WANNAI_TRIO
@@ -361,7 +361,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		givenVessel = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(119, 3, true, "<str>He has successfully caught a Karambwan."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the Karambwan vessel to Tiadeche."),
 			new DialogRequirement("What is it?")
 		);
 
@@ -399,13 +399,13 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		);
 
 		givenPotion = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the agility potion to Tamayu."),
 			new DialogRequirement("Thank you Bwana. Now I must prepare for my next"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have increased his agility to match the Shaikahan's.")
 		);
 		givenSpear = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Tamayu, try using this weapon."),
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand the spear to Tamayu."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have give him a stronger and Karambwan poisoned spear.")
 		);
 
@@ -421,20 +421,20 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 
 		givenBones = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the burnt Jogre bones marinated"),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a burnt Jogre bones marinated in"),
 			new DialogRequirement("Finally! A near lifetime of craving satisfied!")
 		);
 
 		givenSandwich = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the seaweed in monkey skin sandwich."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him a seaweed in monkey skin sandwich."),
 			new DialogRequirement("Yes ... perfect! You really do not understand how necessary that was."),
 			givenBones
 		);
 
 		givenRum = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand Tinsay the sliced bananas in Karamjan " +
 				"rum."),
 			new WidgetTextRequirement(119, 3, true, "<str>I have given him sliced banana in Karamja rum."),
 			new DialogRequirement("Yes ... that's it! Hits just the spot!"),
@@ -456,7 +456,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 
 		hadManual = new Conditions(true, LogicType.OR,
 			craftingManual,
-			new WidgetTextRequirement(WidgetInfo.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
+			new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, "You hand over the crafting manual to Tiadeche."),
 			new WidgetTextRequirement(119, 3, true, "<str>retrieved crafting instructions for Tiadeche.")
 		);
 	}
@@ -497,6 +497,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		jogreBones = new ItemRequirement("Jogre Bones", ItemID.JOGRE_BONES);
 		jogreBones.canBeObtainedDuringQuest();
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.RAW_KARAMBWAN);
+		rawKarambwan.setTooltip("You can obtain during quest with 65 Fishing.");
 		karambwanPaste = new ItemRequirement("Karambwan paste", ItemID.KARAMBWAN_PASTE);
 		karambwanPaste.addAlternates(ItemID.KARAMBWAN_PASTE_3153, ItemID.KARAMBWAN_PASTE_3154);
 		burntJogreBones = new ItemRequirement("Burnt Jogre Bones", ItemID.BURNT_JOGRE_BONES);
@@ -508,7 +509,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED);
 		karamjanRum = new ItemRequirement("Karamjan Rum", ItemID.KARAMJAN_RUM);
 		karambwanji = new ItemRequirement("Or More Raw Karambwanji", ItemID.RAW_KARAMBWANJI, 23);
-		rawKarambwans = new ItemRequirement("Karambwan", ItemID.RAW_KARAMBWAN);
+		rawKarambwans = new ItemRequirement("Raw Karambwan", ItemID.RAW_KARAMBWAN);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		poisonKarambwan = new ItemRequirement("Poison karambwan", ItemID.POISON_KARAMBWAN);
 		karambwanjiPaste = new ItemRequirement("Karambwanji paste", ItemID.KARAMBWANJI_PASTE);
@@ -531,7 +532,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		return new ArrayList<>(Arrays.asList(
 			coins.quantity(30), hammer, smallFishingNet, pestleAndMortar, spear, agilityPotion4,
-			rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire
+			rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire, rawKarambwan
 		));
 	}
 
@@ -540,12 +541,11 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		reqs.add(jogreBones);
-		reqs.add(new ItemRequirement("Extra Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
+		reqs.add(new ItemRequirement("Extra Raw Karambwans in case you burn the one given", ItemID.RAW_KARAMBWAN));
 		reqs.add(new ItemRequirement("Any Antipoisons", ItemCollections.ANTIPOISONS));
 		reqs.add(new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS));
 		reqs.add(new ItemRequirement("Dramen staff if you have access to fairy rings", ItemCollections.FAIRY_STAFF));
 		reqs.add(new ItemRequirement("Sliced Banana (Use a knife on a banana)", ItemID.SLICED_BANANA));
-		reqs.add(new ItemRequirement("Poison Karambwan", ItemID.POISON_KARAMBWAN));
 		reqs.add(new ItemRequirement("Food", -1, -1));
 		return reqs;
 	}
@@ -559,6 +559,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));
+		req.add(new ItemRequirement("65 Fishing for Raw Karambwan if any type of Ironman account.", -1, -1));
 		return req;
 	}
 
@@ -581,7 +582,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2,000 Coins", ItemID.COINS_995, 2000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
 	}
 
 	@Override

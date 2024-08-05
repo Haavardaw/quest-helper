@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.kingsransom;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -37,7 +37,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -71,7 +71,7 @@ public class KingsRansom extends BasicQuestHelper
 		hairclipOrLockpick, holyGrail, granite, telegrab;
 
 	//Items Recommended
-	ItemRequirement ardougneTeleport, camelotTeleport, edgevilleTeleport;
+	ItemRequirement ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport;
 
 	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, inTrialRoom, handlerInRoom, butlerInRoom,
 		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasTelegrabItems,
@@ -238,8 +238,9 @@ public class KingsRansom extends BasicQuestHelper
 		granite.addAlternates(ItemID.GRANITE_5KG, ItemID.GRANITE_500G);
 
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.ARDOUGNE_TELEPORT);
-		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT);
-		edgevilleTeleport = new ItemRequirement("Edgeville teleport", ItemID.AMULET_OF_GLORY6);
+		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.CAMELOT_TELEPORT, 3);
+		monasteryOrEdgevilleTeleport = new ItemRequirement("Monastery with Combat Bracelet or Edgeville glory teleport", ItemCollections.AMULET_OF_GLORIES);
+		monasteryOrEdgevilleTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 	}
 
 	public void loadZones()
@@ -296,6 +297,7 @@ public class KingsRansom extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToGossip = new NpcStep(this, NpcID.GOSSIP, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
+		talkToGossip.addDialogStep("Yes.");
 		talkToGossip.addDialogStep("How curious. Maybe I should investigate it.");
 		talkToGuard = new NpcStep(this, NpcID.GUARD_4218, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor.");
 
@@ -421,7 +423,7 @@ public class KingsRansom extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(ardougneTeleport, camelotTeleport, edgevilleTeleport);
+		return Arrays.asList(ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport);
 	}
 
 	@Override

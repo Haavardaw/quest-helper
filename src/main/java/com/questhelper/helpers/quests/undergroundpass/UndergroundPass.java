@@ -26,11 +26,11 @@
 package com.questhelper.helpers.quests.undergroundpass;
 
 import com.google.common.collect.ImmutableMap;
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
-import com.questhelper.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -39,7 +39,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.rewards.ExperienceReward;
@@ -47,6 +47,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -67,6 +68,10 @@ import net.runelite.api.coords.WorldPoint;
 )
 public class UndergroundPass extends BasicQuestHelper
 {
+	private static final int ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
+	private static final int ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
+	private static final int ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
+
 	//Items Required
 	ItemRequirement rope1, rope2, ropeHighlight, bow, arrows, arrowsHighlight, spade, spadeHighlight, plank,
 		plankHighlight, bucket, tinderbox, tinderboxHighlight, combatEquipment, robeTopEquipped, robeBottomEquipped,
@@ -99,9 +104,9 @@ public class UndergroundPass extends BasicQuestHelper
 		goThroughPipe, searchUnicornCage, useRailingOnBoulder, searchUnicornCageAgain, leaveUnicornArea,
 		walkToKnights, killJerro, killCarl, killHarry, useBadgeJerroOnWell, useBadgeHarryOnWell, useBadgeCarlOnWell,
 		useUnicornHornOnWell, openIbansDoor, descendCave, talkToNiloof, talkToKlank, goBackUpToIbansCavern,
-		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthanian,
-		searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag,
-		ascendToHalfSouless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
+		pickUpWitchsCat, useCatOnDoor, searchWitchsChest, killHolthion, killDoomion, killOthainian,
+		searchDoomionsChest, returnToDwarfs, pickUpBucket, pickUpTinderbox, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb,
+		killKalrag, ascendToHalfSoulless, searchCage, killDisciple, enterTemple, useDollOnWell, talkToKoftikAfterTemple,
 		talkToKingLathasAfterTemple, leaveFallArea, useAshOnDoll, useShadowOnDoll, useDoveOnDoll, goUpToLathasToFinish;
 
 	//Zones
@@ -126,13 +131,16 @@ public class UndergroundPass extends BasicQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		spadeHighlight = spade.highlighted();
 		plank = new ItemRequirement("Plank", ItemID.PLANK);
+		plank.canBeObtainedDuringQuest();
 		plankHighlight = new ItemRequirement("Plank", ItemID.PLANK);
 		plankHighlight.setHighlightInInventory(true);
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket.canBeObtainedDuringQuest();
 		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
 		bucketHighlight.setHighlightInInventory(true);
 		bucketHighlight.setTooltip("You can grab a bucket from the southwest corner of the large dwarf encampment building.");
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
+		tinderbox.canBeObtainedDuringQuest();
 		tinderboxHighlight = tinderbox.highlighted();
 		combatEquipment = new ItemRequirement("Combat Equipment", -1, -1).isNotConsumed();
 		combatEquipment.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -160,39 +168,29 @@ public class UndergroundPass extends BasicQuestHelper
 		orb3 = new ItemRequirement("Orb of light", ItemID.ORB_OF_LIGHT_1482);
 		orb4 = new ItemRequirement("Orb of light", ItemID.ORB_OF_LIGHT);
 		railing = new ItemRequirement("Railing", ItemID.PIECE_OF_RAILING);
-		railingHighlight = new ItemRequirement("Railing", ItemID.PIECE_OF_RAILING);
-		railingHighlight.setHighlightInInventory(true);
+		railingHighlight = railing.highlighted();
 		unicornHorn = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
 		unicornHorn.setTooltip("You can get this from the cage in the previous room");
-		unicornHornHighlight = new ItemRequirement("Unicorn Horn", ItemID.UNICORN_HORN_1487);
-		unicornHornHighlight.setTooltip("You can get this from the cage in the previous room");
-		unicornHornHighlight.setHighlightInInventory(true);
+		unicornHornHighlight = unicornHorn.highlighted();
 		badgeJerro = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
-		badgeJerroHighlight = new ItemRequirement("Badge (Sir Jerro)", ItemID.PALADINS_BADGE);
-		badgeJerroHighlight.setHighlightInInventory(true);
+		badgeJerroHighlight = badgeJerro.highlighted();
 		badgeCarl = new ItemRequirement("Badge (Sir Carl)", ItemID.PALADINS_BADGE_1489);
-		badgeCarlHighlight = new ItemRequirement("Badge (Sir Carl)", ItemID.PALADINS_BADGE_1489);
-		badgeCarlHighlight.setHighlightInInventory(true);
+		badgeCarlHighlight = badgeCarl.highlighted();
 		badgeHarry = new ItemRequirement("Badge (Sir Harry)", ItemID.PALADINS_BADGE_1490);
-		badgeHarryHighlight = new ItemRequirement("Badge (Sir Harry)", ItemID.PALADINS_BADGE_1490);
-		badgeHarryHighlight.setHighlightInInventory(true);
+		badgeHarryHighlight = badgeHarry.highlighted();
 		klanksGauntlets = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS);
 		klanksGauntletsEquipped = new ItemRequirement("Klank's gauntlets", ItemID.KLANKS_GAUNTLETS, 1, true);
 		klanksGauntletsEquipped.setTooltip("You can get a pair from Klank in the Dwarf camp");
 		witchsCat = new ItemRequirement("Witch's Cat", ItemID.WITCHS_CAT);
 		witchsCat.setHighlightInInventory(true);
-		amuletHolthion = new ItemRequirement("Holthion's Amulet", ItemID.AMULET_OF_HOLTHION);
-		amuletHolthionHighlight = new ItemRequirement("Holthion's Amulet", ItemID.AMULET_OF_HOLTHION);
-		amuletHolthionHighlight.setHighlightInInventory(true);
-		amuletDoomion = new ItemRequirement("Doomion's Amulet", ItemID.AMULET_OF_DOOMION);
-		amuletDoomionHighlight = new ItemRequirement("Doomion's Amulet", ItemID.AMULET_OF_DOOMION);
-		amuletDoomionHighlight.setHighlightInInventory(true);
-		amuletOthanian = new ItemRequirement("Othanian's Amulet", ItemID.AMULET_OF_OTHANIAN);
-		amuletOthanianHighlight = new ItemRequirement("Othanian's Amulet", ItemID.AMULET_OF_OTHANIAN);
-		amuletOthanianHighlight.setHighlightInInventory(true);
+		amuletHolthion = new ItemRequirement("Amulet of Holthion", ItemID.AMULET_OF_HOLTHION);
+		amuletHolthionHighlight = amuletHolthion.highlighted();
+		amuletDoomion = new ItemRequirement("Amulet of Doomion", ItemID.AMULET_OF_DOOMION);
+		amuletDoomionHighlight = amuletDoomion.highlighted();
+		amuletOthanian = new ItemRequirement("Amulet of Othanian", ItemID.AMULET_OF_OTHANIAN);
+		amuletOthanianHighlight = amuletOthanian.highlighted();
 		dollOfIban = new ItemRequirement("Doll of Iban", ItemID.DOLL_OF_IBAN);
-		dollOfIbanHighlighted = new ItemRequirement("Doll of Iban", ItemID.DOLL_OF_IBAN);
-		dollOfIbanHighlighted.setHighlightInInventory(true);
+		dollOfIbanHighlighted = dollOfIban.highlighted();
 		brew = new ItemRequirement("Dwarf brew", ItemID.DWARF_BREW);
 		brew.setHighlightInInventory(true);
 		robeTop = new ItemRequirement("Zamorak monk top", ItemID.ZAMORAK_MONK_TOP);
@@ -405,11 +403,7 @@ public class UndergroundPass extends BasicQuestHelper
 		passTrap5 = new ObjectStep(this, ObjectID.ODD_MARKINGS, new WorldPoint(2430, 9676, 0), "Either disable or walk past the traps.");
 		passTrap1.addSubSteps(passTrap2, passTrap3, passTrap4, passTrap5);
 
-		final int OBJECTID_ORB_OF_LIGHT1 = NullObjectID.NULL_37326;
-		final int OBJECTID_ORB_OF_LIGHT2 = NullObjectID.NULL_37325;
-		final int OBJECTID_ORB_OF_LIGHT3 = NullObjectID.NULL_37324;
-
-		collectOrb1 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT1, "Take the first orb of light.");
+		collectOrb1 = new ObjectStep(this, ORB_OF_LIGHT1, "Take the first orb of light.");
 		plankRock1 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9681, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
 		plankRock1.addIcon(ItemID.PLANK);
 		plankRock2 = new ObjectStep(this, ObjectID.FLAT_ROCK, new WorldPoint(2418, 9685, 0), "Use a plank on the flat rock to cross it.", plankHighlight);
@@ -418,8 +412,8 @@ public class UndergroundPass extends BasicQuestHelper
 		plankRock3.addIcon(ItemID.PLANK);
 		collectOrb1.addSubSteps(plankRock1, plankRock2, plankRock3);
 
-		collectOrb2 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT2, new WorldPoint(2385, 9685, 0), "Take the second orb of light north west of the well.");
-		collectOrb3 = new ObjectStep(this, OBJECTID_ORB_OF_LIGHT3, new WorldPoint(2386, 9677, 0), "Take the third orb of light west of the well. Remember to use a plank on the flat rocks to cross them.");
+		collectOrb2 = new ObjectStep(this, ORB_OF_LIGHT2, new WorldPoint(2385, 9685, 0), "Take the second orb of light north west of the well.");
+		collectOrb3 = new ObjectStep(this, ORB_OF_LIGHT3, new WorldPoint(2386, 9677, 0), "Take the third orb of light west of the well. Remember to use a plank on the flat rocks to cross them.");
 		collectOrb4 = new ObjectStep(this, ObjectID.FLAT_ROCK_3339, new WorldPoint(2382, 9668, 0), "Search the flat rock to remove the trap and take the fourth orb to the south west of the well.");
 		collectOrb4.addDialogStep("Yes, I'll give it a go.");
 		orbsToFurnace = new ObjectStep(this, ObjectID.FURNACE_3294, new WorldPoint(2455, 9683, 0), "Return to the furnace to the east, and use the orbs on it.");
@@ -499,13 +493,15 @@ public class UndergroundPass extends BasicQuestHelper
 		));
 
 		killDoomion = new NpcStep(this, NpcID.DOOMION, new WorldPoint(2135, 4566, 1), "Kill Doomion and pick up his amulet.", amuletDoomion);
-		killOthanian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othanian and pick up his amulet.", amuletOthanian);
+		killOthainian = new NpcStep(this, NpcID.OTHAINIAN, new WorldPoint(2123, 4563, 1), "Kill Othainian and pick up his amulet.", amuletOthanian);
 		useShadowOnDoll = new DetailedQuestStep(this, "Use the shadow on the doll.", ibansShadow, dollOfIbanHighlighted);
 		searchDoomionsChest = new ObjectStep(this, ObjectID.CHEST_3274, new WorldPoint(2136, 4578, 1), "Search the chest north of Doomion.");
 		searchDoomionsChest.addSubSteps(useShadowOnDoll);
 		useAshOnDoll = new DetailedQuestStep(this, "Use the ashes on the doll.", ibansAshes, dollOfIbanHighlighted);
 		useDoveOnDoll = new DetailedQuestStep(this, "Use the dove on the doll.", ibansDove, dollOfIbanHighlighted);
 		returnToDwarfs = new ObjectStep(this, ObjectID.CAVE_3222, new WorldPoint(2150, 4545, 1), "Return to the dwarf encampment on the lower level.");
+		pickUpBucket = new ItemStep(this, new WorldPoint(2309, 9798, 0), "Pick up a bucket in the large dwarf encampment building.", bucket);
+		pickUpTinderbox = new ItemStep(this, new WorldPoint(2324, 9800, 0), "Pick up a tinderbox in the small dwarf encampment building.", tinderbox);
 		useBucketOnBrew = new ObjectStep(this, ObjectID.BREW_BARREL, new WorldPoint(2327, 9799, 0), "Use a bucket on the brew barrel in the dwarf encampment on the south west.", bucketHighlight);
 		useBucketOnBrew.addIcon(ItemID.BUCKET);
 		useBrewOnTomb = new ObjectStep(this, ObjectID.TOMB, new WorldPoint(2357, 9802, 0), "Use the bucket of brew on the tomb in the south east corner of the area.", brew);
@@ -514,7 +510,7 @@ public class UndergroundPass extends BasicQuestHelper
 		useTinderboxOnTomb.addSubSteps(useAshOnDoll);
 		useTinderboxOnTomb.addIcon(ItemID.TINDERBOX);
 		killKalrag = new NpcStep(this, NpcID.KALRAG, new WorldPoint(2356, 9913, 0), "Kill Kalrag the spider. Protect From Melee can keep you safe in this fight.", dollOfIban);
-		ascendToHalfSouless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
+		ascendToHalfSoulless = new ObjectStep(this, ObjectID.CAVE_3223, new WorldPoint(2304, 9915, 0), "Ascend to the upper level of the cave again via the north west exit.");
 		searchCage = new ObjectStep(this, ObjectID.CAGE_3351, new WorldPoint(2135, 4703, 1), "Search the marked cage in the north west of the area while wearing Klank's gauntlets.", klanksGauntletsEquipped);
 		searchCage.setLinePoints(Arrays.asList(
 			new WorldPoint(2116, 4729, 1),
@@ -529,7 +525,7 @@ public class UndergroundPass extends BasicQuestHelper
 			new WorldPoint(2140, 4702, 1),
 			new WorldPoint(2136, 4702, 1)
 		));
-		searchCage.addSubSteps(ascendToHalfSouless, useDoveOnDoll);
+		searchCage.addSubSteps(ascendToHalfSoulless, useDoveOnDoll);
 
 		killDisciple = new NpcStep(this, NpcID.DISCIPLE_OF_IBAN, new WorldPoint(2163, 4648, 1), "Travel along the pathways from the north west corner of the area to the middle. Kill a disciple of Iban and take their robes.", true, dollOfIban);
 		killDisciple.setLinePoints(Arrays.asList(
@@ -683,16 +679,18 @@ public class UndergroundPass extends BasicQuestHelper
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled, doveSmeared), killDisciple);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, dollAshed, kalragKilled, ibansDove), useDoveOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued, dollAshed, kalragKilled), searchCage);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSouless);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed, kalragKilled), ascendToHalfSoulless);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, dollAshed), killKalrag);
 		imbuingTheDoll.addStep(new Conditions(dollImbued, pouredBrew, ibansAshes), useAshOnDoll);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew), useTinderboxOnTomb);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, brew), useBrewOnTomb);
-		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), useBucketOnBrew);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, pouredBrew, tinderbox), useTinderboxOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, brew, tinderbox), useBrewOnTomb);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, bucket, tinderbox), useBucketOnBrew);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued, bucket), pickUpTinderbox);
+		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern, dollImbued), pickUpBucket);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, dollImbued), returnToDwarfs);
 		imbuingTheDoll.addStep(new Conditions(ibansShadow), useShadowOnDoll);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion, amuletOthanian), searchDoomionsChest);
-		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion), killOthanian);
+		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion, amuletDoomion), killOthainian);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea, amuletHolthion), killDoomion);
 		imbuingTheDoll.addStep(new Conditions(isInFinalArea), killHolthion);
 		imbuingTheDoll.addStep(new Conditions(isInDwarfCavern), goBackUpToIbansCavern);
@@ -701,7 +699,7 @@ public class UndergroundPass extends BasicQuestHelper
 		goDestroyDoll.addStep(new Conditions(isInTemple), useDollOnWell);
 		goDestroyDoll.addStep(new Conditions(isInFinalArea, robeBottom, robeTop), enterTemple);
 		goDestroyDoll.addStep(isInFinalArea, killDisciple);
-		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSouless);
+		goDestroyDoll.addStep(isInDwarfCavern, ascendToHalfSoulless);
 
 		ConditionalStep wrappingUp = new ConditionalStep(this, talkToKingLathasAfterTemple);
 		wrappingUp.addStep(isInPostIbanArea, talkToKoftikAfterTemple);
@@ -810,7 +808,7 @@ public class UndergroundPass extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Descending Deeper", Arrays.asList(navigateMaze, searchUnicornCage, useRailingOnBoulder)));
 		allSteps.add(new PanelDetails("Cold-blooded Killing", Arrays.asList(searchUnicornCageAgain, walkToKnights, killJerro, killHarry, killCarl, useBadgeJerroOnWell, openIbansDoor)));
 		allSteps.add(new PanelDetails("The Witch Kardia", Arrays.asList(talkToNiloof, pickUpWitchsCat, useCatOnDoor, searchWitchsChest)));
-		allSteps.add(new PanelDetails("Imbuing the Doll", Arrays.asList(killHolthion, killDoomion, killOthanian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage)));
+		allSteps.add(new PanelDetails("Imbuing the Doll", Arrays.asList(killHolthion, killDoomion, killOthainian, searchDoomionsChest, returnToDwarfs, useBucketOnBrew, useBrewOnTomb, useTinderboxOnTomb, killKalrag, searchCage)));
 		allSteps.add(new PanelDetails("Entering the Temple", Arrays.asList(killDisciple, enterTemple, useDollOnWell)));
 		allSteps.add(new PanelDetails("Foggy Memories", Arrays.asList(talkToKoftikAfterTemple, talkToKingLathasAfterTemple)));
 		return allSteps;

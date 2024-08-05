@@ -24,11 +24,11 @@
  */
 package com.questhelper.helpers.achievementdiaries.karamja;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -54,7 +54,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
+import com.questhelper.questinfo.QuestDescriptor;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.QuestStep;
@@ -136,8 +136,8 @@ public class KaramjaMedium extends BasicQuestHelper
 		usedGliderTask = new ConditionalStep(this, flyToKaramja);
 		doMedium.addStep(notUsedGlider, usedGliderTask);
 
-		caughtKarambwanTask = new ConditionalStep(this, catchKarambwan);
-		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwanji);
+		caughtKarambwanTask = new ConditionalStep(this, catchKarambwanji);
+		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwan);
 		doMedium.addStep(notCaughtKarambwan, caughtKarambwanTask);
 
 		charteredFromShipyardTask = new ConditionalStep(this, charterFromShipyard);
@@ -245,7 +245,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS, -1);
 
-		spiderOnAStick = new ItemRequirement("Spider on stick", ItemID.SPIDER_ON_STICK);
+		spiderOnAStick = new ItemRequirement("Spider on stick", List.of(ItemID.SPIDER_ON_STICK, ItemID.SPIDER_ON_SHAFT));
 		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
 
 		agility12 = new SkillRequirement(Skill.AGILITY, 12);
@@ -299,7 +299,7 @@ public class KaramjaMedium extends BasicQuestHelper
 			"Charter the Lady of the Waves from south of Cairn Isle to Port Khazard.", coins.quantity(50));
 		travelToKhazard.addDialogSteps("Yes, I'll buy a ticket for the ship.", "Khazard Port please.");
 		travelToKhazard.addSubSteps(climbUpToBoat);
-		cutTeak = new ObjectStep(this, ObjectID.TEAK, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
+		cutTeak = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
 			" the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
 		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANY, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
@@ -311,6 +311,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		getMachete = new NpcStep(this, NpcID.SAFTA_DOC_6423, new WorldPoint(2790, 3100, 0),
 			"Get a gem machete from Safta Doc. If you want to make a red topaz one, you'll need 1200 trading sticks.",
 			goutTuber, opal.quantity(3), tradingSticks.quantity(300));
+		((NpcStep) getMachete).addAlternateNpcs(NpcID.SAFTA_DOC);
 		getMachete.addDialogSteps("What do you do here?", "Yes, I'd like to get a machete.");
 		flyToKaramja = new NpcStep(this, NpcID.CAPTAIN_DALBUR, new WorldPoint(3284, 3213, 0),
 			"Fly on a Gnome Glider to Karamja.");

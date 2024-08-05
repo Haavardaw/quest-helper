@@ -24,7 +24,7 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.Zone;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
@@ -51,7 +51,7 @@ public class RegionHintArrowRequirement extends SimpleRequirement
 			return false;
 		}
 
-		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
+		WorldPoint wp = QuestPerspective.getInstanceWorldPointFromReal(client, hintArrowPoint);
 		if (wp == null)
 		{
 			return false;

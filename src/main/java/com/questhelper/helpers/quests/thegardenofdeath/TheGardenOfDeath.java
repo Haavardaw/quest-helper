@@ -24,14 +24,14 @@
  */
 package com.questhelper.helpers.quests.thegardenofdeath;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.QuestVarbits;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -41,6 +41,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
@@ -55,7 +56,7 @@ import java.util.Map;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @QuestDescriptor(
 	quest = QuestHelperQuest.THE_GARDEN_OF_DEATH
@@ -223,7 +224,7 @@ public class TheGardenOfDeath extends BasicQuestHelper
 
 		translationOpen = new WidgetTextRequirement(804, 4, "Translations");
 		chatInputOpen = new Conditions(LogicType.OR,
-			new WidgetTextRequirement(WidgetInfo.CHATBOX_TITLE, "Enter a possible translation for a word you've found:"),
+			new WidgetTextRequirement(ComponentID.CHATBOX_TITLE, "Enter a possible translation for a word you've found:"),
 			new WidgetTextRequirement(229, 1, "You've discovered a new translation",
 				"You've already discovered this translation", "You can't think of any suitable translations"),
 			new WidgetTextRequirement(219, 1, 0, "Attempt another translation?")
@@ -316,6 +317,12 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.FARMING, 20));
 		return req;
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
 	}
 
 	@Override

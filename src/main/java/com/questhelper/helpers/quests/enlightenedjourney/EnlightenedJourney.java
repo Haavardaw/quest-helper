@@ -24,10 +24,10 @@
  */
 package com.questhelper.helpers.quests.enlightenedjourney;
 
-import com.questhelper.ItemCollections;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.QuestHelperQuest;
-import com.questhelper.Zone;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.questinfo.QuestDescriptor;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -35,7 +35,7 @@ import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -196,6 +196,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 
 		talkToAugusteWithPapyrus = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste with 2 papyrus and a sack of potatoes.", papyrus2, sackOfPotatoes);
+		talkToAugusteWithPapyrus.addDialogStep("Yes, I have them here.");
 
 		talkToAugusteAfterMob = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0),
 			"Talk to Auguste after the flash mob.");
@@ -216,7 +217,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 			"Talk to Auguste to fly.", logs10, tinderbox);
 		talkToAugusteWithLogsAndTinderbox.addDialogSteps("Okay.");
 
-		doPuzzle = new BalloonFlight1(this);
+		doPuzzle = new TaverleyBalloonFlight(this);
 
 		talkToAugusteToFinish = new NpcStep(this, NpcID.AUGUSTE, new WorldPoint(2937, 3421, 0),
 			"Talk to Auguste in Taverley to finish the quest.");
